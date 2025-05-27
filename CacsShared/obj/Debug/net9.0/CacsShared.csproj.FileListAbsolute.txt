@@ -1,0 +1,11 @@
+C:\Users\caiom\source\repos\Cacs\CacsShared\bin\Debug\net9.0\CacsShared.deps.json
+C:\Users\caiom\source\repos\Cacs\CacsShared\bin\Debug\net9.0\CacsShared.dll
+C:\Users\caiom\source\repos\Cacs\CacsShared\bin\Debug\net9.0\CacsShared.pdb
+C:\Users\caiom\source\repos\Cacs\CacsShared\obj\Debug\net9.0\CacsShared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\caiom\source\repos\Cacs\CacsShared\obj\Debug\net9.0\CacsShared.AssemblyInfoInputs.cache
+C:\Users\caiom\source\repos\Cacs\CacsShared\obj\Debug\net9.0\CacsShared.AssemblyInfo.cs
+C:\Users\caiom\source\repos\Cacs\CacsShared\obj\Debug\net9.0\CacsShared.csproj.CoreCompileInputs.cache
+C:\Users\caiom\source\repos\Cacs\CacsShared\obj\Debug\net9.0\CacsShared.dll
+C:\Users\caiom\source\repos\Cacs\CacsShared\obj\Debug\net9.0\refint\CacsShared.dll
+C:\Users\caiom\source\repos\Cacs\CacsShared\obj\Debug\net9.0\CacsShared.pdb
+C:\Users\caiom\source\repos\Cacs\CacsShared\obj\Debug\net9.0\ref\CacsShared.dll
