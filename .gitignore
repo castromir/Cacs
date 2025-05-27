@@ -1,0 +1,74 @@
+# Build results
+bin/
+obj/
+out/
+
+# VS local history and user-specific files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider and VS Code settings
+.idea/
+.vscode/
+
+# User-specific files
+*.swp
+*.bak
+*.tmp
+*.log
+
+# Auto-generated files
+Generated_Code/
+GeneratedFiles/
+
+# ASP.NET specific
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# DotCover
+*.dotCover
+
+# StyleCop
+StyleCopReport.xml
+
+# Paket
+.paket/
+paket-files/
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+.nuget/
+packages/
+*.psmdcp
+*.props
+*.targets
+
+# NPM / NodeJS
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Logs
+*.log
+log/
+
+# System
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# Windows
+*.stackdump
