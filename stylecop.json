@@ -1,0 +1,37 @@
+{
+  "settings": {
+    "documentationRules": {
+      "companyName": "Caio M. | Cacs Project",
+      "documentExposedElements": false,
+      "documentInternalElements": false,
+      "documentPrivateElements": false,
+      "documentInterfaces": true,
+      "fileNamingConvention": "metadata",
+      "xmlHeader": false,
+      "xmlHeaderFile": null
+    },
+    "namingRules": {
+      "allowCommonHungarianPrefixes": false,
+      "fieldPrefix": "_",
+      "includeInferredFields": true,
+      "allowUnderscoreInNames": false
+    },
+    "orderingRules": {
+      "usingDirectivesPlacement": "outsideNamespace",
+      "systemUsingDirectivesFirst": true,
+      "blankLinesBetweenUsingGroups": "require"
+    },
+    "layoutRules": {
+      "newlineAtEndOfFile": "require",
+      "allowConsecutiveUsings": false
+    },
+    "readabilityRules": {
+      "allowBuiltInTypeAliases": true,
+      "allowDoWhileBraces": false,
+      "allowMultipleStatementsOnSameLine": false
+    },
+    "maintainabilityRules": {
+      "topLevelTypesMustBeInOwnFile": true
+    }
+  }
+}

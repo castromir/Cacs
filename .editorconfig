@@ -1,0 +1,100 @@
+root = true
+
+[*.cs]
+
+# Encoding e layout
+charset = utf-8
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# -------------------
+# Roslyn Analyzers
+# -------------------
+
+# Requer comentário XML em membros públicos, interfaces e eventos (warning)
+dotnet_diagnostic.CS1591.severity = warning
+
+# Evita usings não utilizados (warning)
+dotnet_diagnostic.IDE0005.severity = warning
+
+# Usa var quando o tipo é óbvio (suggestion)
+dotnet_diagnostic.IDE0007.severity = suggestion
+
+# Usa tipo explícito quando o tipo não é óbvio (suggestion)
+dotnet_diagnostic.IDE0008.severity = suggestion
+
+# Remove código morto (warning)
+dotnet_diagnostic.IDE0051.severity = warning
+
+# Simplifica expressões (suggestion)
+dotnet_diagnostic.IDE0009.severity = suggestion
+
+# Evita parâmetros não usados (warning)
+dotnet_diagnostic.CS0168.severity = warning
+dotnet_diagnostic.CS0219.severity = warning
+
+# Usa nameof em vez de strings (warning)
+dotnet_diagnostic.IDE0043.severity = warning
+
+# -------------------
+# StyleCop Analyzers
+# -------------------
+
+# Campos privados devem começar com _
+dotnet_diagnostic.SA1309.severity = warning
+
+# Parâmetros e variáveis locais camelCase
+dotnet_diagnostic.SA1300.severity = warning
+
+# Exige chaves em blocos, mesmo para uma linha
+dotnet_diagnostic.SA1503.severity = warning
+
+# Exige espaço entre operadores binários
+dotnet_diagnostic.SA1027.severity = warning
+
+# Exige comentários XML para membros públicos e protegidos
+dotnet_diagnostic.SA1600.severity = warning
+dotnet_diagnostic.SA1604.severity = warning
+
+# Comentários XML com tags corretas
+dotnet_diagnostic.SA1611.severity = warning
+
+# Requer uso de this. para membros da classe
+dotnet_diagnostic.SA1101.severity = warning
+
+# Remove espaços em branco extras
+dotnet_diagnostic.SA1028.severity = warning
+
+# Usa 'using' fora do namespace
+dotnet_diagnostic.SA1200.severity = warning
+
+# Ordena usings alfabeticamente
+dotnet_diagnostic.SA1210.severity = warning
+
+# Exige linhas em branco entre membros
+dotnet_diagnostic.SA1507.severity = warning
+
+# C# coding styles
+
+# Quebra de linha antes da chave
+csharp_new_line_before_open_brace = all
+
+# Preferência por expressão lambda com parênteses
+csharp_style_parentheses_in_lambda_expression_parameters = always_for_clarity:suggestion
+
+# Qualidade e segurança
+
+# Evitar métodos públicos estáticos sem contexto
+dotnet_diagnostic.CA1822.severity = warning
+
+# Detecta possíveis problemas de nulidade
+dotnet_diagnostic.CS8602.severity = warning
+dotnet_diagnostic.CS8603.severity = warning
+
+# Evita async void (warning)
+dotnet_diagnostic.VSTHRD100.severity = warning
+
+# Preferência para propriedades autoimplementadas
+dotnet_diagnostic.IDE0044.severity = suggestion
