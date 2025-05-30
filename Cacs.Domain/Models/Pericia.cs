@@ -8,7 +8,7 @@ namespace Cacs.Domain.Models
 
         public NivelDeTreinamento NivelTreinamento { get; } = nivelTreinamento;
 
-        public int OutrosBonus { get; set; }
+        public int OutrosBonus { get; private set; }
 
         public int FichaId { get; set; }
     }

@@ -16,11 +16,6 @@
       "includeInferredFields": true,
       "allowUnderscoreInNames": false
     },
-    "orderingRules": {
-      "usingDirectivesPlacement": "outsideNamespace",
-      "systemUsingDirectivesFirst": true,
-      "blankLinesBetweenUsingGroups": "require"
-    },
     "layoutRules": {
       "newlineAtEndOfFile": "require",
       "allowConsecutiveUsings": false

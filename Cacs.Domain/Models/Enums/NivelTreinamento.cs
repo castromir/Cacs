@@ -1,29 +1,32 @@
-namespace Cacs.Domain.Models
+namespace Cacs.Domain.Models.Enums
 {
+    /// <summary>
+    ///     Representa os 5 possiveis niveis de treinamento do personagem em uma pericia.
+    /// </summary>
     public enum NivelTreinamento
     {
         /// <summary>
-        /// NivelTreinamento padrao de treinamento.
+        /// Nivel padrao de treinamento.
         /// </summary>
         Destreinado = 0,
 
         /// <summary>
-        /// NivelTreinamento 1 de treinamento.
+        /// Nivel 1 de treinamento.
         /// </summary>
         Treinado = 2,
 
         /// <summary>
-        /// NivelTreinamento 2 de treinamento.
+        /// Nivel 2 de treinamento.
         /// </summary>
         Veterano = 4,
 
         /// <summary>
-        /// NivelTreinamento 4 de treinamento.
+        /// Nivel 3 de treinamento.
         /// </summary>
         Expert = 6,
 
         /// <summary>
-        /// NivelTreinamento 4 de treinamento.
+        /// Nivel 4 de treinamento.
         /// </summary>
         Mestre = 8,
     }

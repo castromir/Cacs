@@ -2,7 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Cacs.Domain.Models
+namespace Cacs.Domain.Models.Classe
 {
     /// <summary>
     /// Representa a classe base para todos os personagens.

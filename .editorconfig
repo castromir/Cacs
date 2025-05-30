@@ -14,7 +14,11 @@ trim_trailing_whitespace = true
 # -------------------
 dotnet_diagnostic.SA1633.severity = none
 dotnet_diagnostic.SA1600.severity = none
-
+dotnet_diagnostic.SA1009.severity = none
+dotnet_diagnostic.SA1111.severity = none
+dotnet_diagnostic.SA1201.severity = none
+dotnet_diagnostic.SA1010.severity = none
+dotnet_diagnostic.SA1516.severity = none
 
 # Evita usings não utilizados (warning)
 dotnet_diagnostic.IDE0005.severity = warning
@@ -75,9 +79,6 @@ dotnet_diagnostic.SA1210.severity = warning
 dotnet_diagnostic.SA1507.severity = warning
 
 # C# coding styles
-
-# Quebra de linha antes da chave
-csharp_new_line_before_open_brace = all
 
 # Preferência por expressão lambda com parênteses
 csharp_style_parentheses_in_lambda_expression_parameters = always_for_clarity:suggestion

@@ -1,3 +1,5 @@
+using Cacs.Domain.Models.Enums;
+
 namespace Cacs.Domain.Models
 {
     public class NivelDeTreinamento
@@ -9,6 +11,15 @@ namespace Cacs.Domain.Models
 
         public NivelTreinamento Nivel { get; }
 
+        /// <summary>
+        /// Obtem o bonus de treinamento baseado no nivel de treinamento.
+        /// </summary>
+        /// <returns>
+        /// Retorna o bonus de treinamento.
+        /// </returns>
+        /// <exception cref="NotImplementedException">
+        /// Nao implementado.
+        /// </exception>
         public int ObterBonus()
         {
             return this.Nivel switch
