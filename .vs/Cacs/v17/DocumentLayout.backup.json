@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\caiom\\Cacs\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{70A7D802-7D5B-4008-A623-2DE8A144B8DA}|Cacs.Domain\\Cacs.Domain.csproj|c:\\users\\caiom\\cacs\\cacs.domain\\cacs.domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{70A7D802-7D5B-4008-A623-2DE8A144B8DA}|Cacs.Domain\\Cacs.Domain.csproj|solutionrelative:cacs.domain\\cacs.domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{70A7D802-7D5B-4008-A623-2DE8A144B8DA}|Cacs.Domain\\Cacs.Domain.csproj|c:\\users\\caiom\\cacs\\cacs.domain\\models\\classebase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{70A7D802-7D5B-4008-A623-2DE8A144B8DA}|Cacs.Domain\\Cacs.Domain.csproj|solutionrelative:cacs.domain\\models\\classebase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -23,19 +27,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Cacs.Domain",
+              "DocumentMoniker": "C:\\Users\\caiom\\Cacs\\Cacs.Domain\\Cacs.Domain.csproj",
+              "RelativeDocumentMoniker": "Cacs.Domain\\Cacs.Domain.csproj",
+              "ToolTip": "C:\\Users\\caiom\\Cacs\\Cacs.Domain\\Cacs.Domain.csproj",
+              "RelativeToolTip": "Cacs.Domain\\Cacs.Domain.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-05-28T21:54:55.074Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "ClasseBase.cs",
               "DocumentMoniker": "C:\\Users\\caiom\\Cacs\\Cacs.Domain\\Models\\ClasseBase.cs",
               "RelativeDocumentMoniker": "Cacs.Domain\\Models\\ClasseBase.cs",
               "ToolTip": "C:\\Users\\caiom\\Cacs\\Cacs.Domain\\Models\\ClasseBase.cs",
               "RelativeToolTip": "Cacs.Domain\\Models\\ClasseBase.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAcAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-27T04:44:23.541Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Class1.cs",
               "DocumentMoniker": "C:\\Users\\caiom\\Cacs\\Cacs.Application\\Class1.cs",
               "RelativeDocumentMoniker": "Cacs.Application\\Class1.cs",

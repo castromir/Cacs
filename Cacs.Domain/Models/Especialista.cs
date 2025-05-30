@@ -1,16 +1,16 @@
-﻿namespace CacsShared.Models
+namespace Cacs.Domain.Models
 {
     public class Especialista : ClasseBase
     {
         public override void CalcularAtributos()
         {
-            PontosVidaInicial = 16;
-            PontosEsforcoInicial = 3;
-            SanidadeInicial = 16;
+            this.PontosVidaInicial = 16;
+            this.PontosEsforcoInicial = 3;
+            this.SanidadeInicial = 16;
 
-            BonusPontosVida = 3;
-            BonusPontosEsforco = 3;
-            BonusSanidade = 4;
+            this.BonusPontosVida = 3;
+            this.BonusPontosEsforco = 3;
+            this.BonusSanidade = 4;
         }
     }
 }

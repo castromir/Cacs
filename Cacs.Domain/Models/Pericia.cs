@@ -1,19 +1,15 @@
-﻿namespace CacsShared.Models
+namespace Cacs.Domain.Models
 {
-    public enum NivelTreinamento
-    {
-        Nenhum = 0,
-        Treinado = 2,
-        Veterano = 4,
-        Expert = 6
-    }
-
-    public class Pericia
+    public class Pericia(string nome, NivelDeTreinamento nivelTreinamento)
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
-        public NivelTreinamento Nivel { get; set; } = NivelTreinamento.Nenhum;
+
+        public string Nome { get; } = nome;
+
+        public NivelDeTreinamento NivelTreinamento { get; } = nivelTreinamento;
+
+        public int OutrosBonus { get; set; }
+
         public int FichaId { get; set; }
-        public int Valor { get; set; }
     }
 }

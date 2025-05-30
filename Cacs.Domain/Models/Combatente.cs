@@ -1,16 +1,16 @@
-﻿namespace CacsShared.Models
+namespace Cacs.Domain.Models
 {
     public class Combatente : ClasseBase
     {
         public override void CalcularAtributos()
         {
-            PontosVidaInicial = 20;
-            PontosEsforcoInicial = 2;
-            SanidadeInicial = 14;
+            this.PontosVidaInicial = 20;
+            this.PontosEsforcoInicial = 2;
+            this.SanidadeInicial = 14;
 
-            BonusPontosVida = 4;
-            BonusPontosEsforco = 2;
-            BonusSanidade = 3;
+            this.BonusPontosVida = 4;
+            this.BonusPontosEsforco = 2;
+            this.BonusSanidade = 3;
         }
     }
 }

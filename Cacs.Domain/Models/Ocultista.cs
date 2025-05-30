@@ -1,16 +1,16 @@
-﻿namespace CacsShared.Models
+namespace Cacs.Domain.Models
 {
     public class Ocultista : ClasseBase
     {
         public override void CalcularAtributos()
         {
-            PontosVidaInicial = 12;
-            PontosEsforcoInicial = 4;
-            SanidadeInicial = 20;
+            this.PontosVidaInicial = 12;
+            this.PontosEsforcoInicial = 4;
+            this.SanidadeInicial = 20;
 
-            BonusPontosVida = 2;
-            BonusPontosEsforco = 4;
-            BonusSanidade = 5;
+            this.BonusPontosVida = 2;
+            this.BonusPontosEsforco = 4;
+            this.BonusSanidade = 5;
         }
     }
 }

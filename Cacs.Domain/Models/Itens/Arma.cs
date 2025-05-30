@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace CacsShared.Models.Itens
+namespace Cacs.Models.Itens
 {
     public enum enumProficienciaArma
     {

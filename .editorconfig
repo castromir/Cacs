@@ -12,9 +12,9 @@ trim_trailing_whitespace = true
 # -------------------
 # Roslyn Analyzers
 # -------------------
+dotnet_diagnostic.SA1633.severity = none
+dotnet_diagnostic.SA1600.severity = none
 
-# Requer comentário XML em membros públicos, interfaces e eventos (warning)
-dotnet_diagnostic.CS1591.severity = warning
 
 # Evita usings não utilizados (warning)
 dotnet_diagnostic.IDE0005.severity = warning
@@ -55,8 +55,6 @@ dotnet_diagnostic.SA1503.severity = warning
 dotnet_diagnostic.SA1027.severity = warning
 
 # Exige comentários XML para membros públicos e protegidos
-dotnet_diagnostic.SA1600.severity = warning
-dotnet_diagnostic.SA1604.severity = warning
 
 # Comentários XML com tags corretas
 dotnet_diagnostic.SA1611.severity = warning

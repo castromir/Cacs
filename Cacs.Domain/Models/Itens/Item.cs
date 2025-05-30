@@ -1,4 +1,4 @@
-﻿namespace CacsShared.Models.Itens
+namespace Cacs.Models.Itens
 {
     public abstract class Item
     {

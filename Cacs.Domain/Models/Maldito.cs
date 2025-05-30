@@ -1,16 +1,16 @@
-﻿namespace CacsShared.Models
+namespace Cacs.Domain.Models
 {
     public class Maldito : ClasseBase
     {
         public override void CalcularAtributos()
         {
-            PontosVidaInicial = 14;
-            PontosEsforcoInicial = 3;
-            SanidadeInicial = 14;
+            this.PontosVidaInicial = 14;
+            this.PontosEsforcoInicial = 3;
+            this.SanidadeInicial = 14;
 
-            BonusPontosVida = 3;
-            BonusPontosEsforco = 2;
-            BonusSanidade = 4;
+            this.BonusPontosVida = 3;
+            this.BonusPontosEsforco = 2;
+            this.BonusSanidade = 4;
         }
     }
 }
