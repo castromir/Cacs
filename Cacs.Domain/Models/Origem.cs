@@ -8,7 +8,7 @@ namespace Cacs.Domain.Models
         public string Nome { get; } = string.Empty;
         public string Descricao { get; } = string.Empty;
         public string Habilidade { get; } = string.Empty;
-        public IReadOnlyCollection<Pericia> PericiasTreinadas { get; }
+        required public IReadOnlyCollection<Pericia> PericiasTreinadas { get; init; }
 
         public Origem(string nome, string descricao, IEnumerable<Pericia> periciasTreinadas, string habilidade)
         {
@@ -17,9 +17,9 @@ namespace Cacs.Domain.Models
                 throw new ArgumentException("A origem deve conceder exatamente 2 pericias.", nameof(periciasTreinadas));
             }
 
-            this.Nome = nome;
-            this.Descricao = descricao;
-            this.Habilidade = habilidade;
+            this.Nome = nome ?? throw new ArgumentNullException(nameof(nome));
+            this.Descricao = descricao ?? throw new ArgumentNullException(nameof(descricao));
+            this.Habilidade = habilidade ?? throw new ArgumentNullException(nameof(habilidade));
             this.PericiasTreinadas = periciasTreinadas.ToList().AsReadOnly();
         }
     }

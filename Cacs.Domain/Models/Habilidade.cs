@@ -30,8 +30,8 @@ namespace Cacs.Domain.Models
             Origem? origemRequerida = null,
             PoderParanormal? poderParanormalRequerido = null)
         {
-            this.Nome = nome;
-            this.Descricao = descricao;
+            this.Nome = nome ?? throw new ArgumentNullException(nameof(nome));
+            this.Descricao = descricao ?? throw new ArgumentNullException(nameof(descricao));
             this.Fonte = fonte;
 
             this.ClasseRequerida = classeRequerida;

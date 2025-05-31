@@ -1,5 +1,3 @@
-using System;
-
 namespace Cacs.Models.Itens
 {
     public enum enumProficienciaArma
