@@ -9,16 +9,13 @@ namespace Cacs.Domain.Models.Classe
     /// </summary>
     public abstract class ClasseBase
     {
+        public Guid Id { get; private set; }
+
         protected int PontosVidaInicial { get; set; }
-
         protected int PontosEsforcoInicial { get; set; }
-
         protected int SanidadeInicial { get; set; }
-
         protected int BonusPontosVida { get; set; }
-
         protected int BonusPontosEsforco { get; set; }
-
         protected int BonusSanidade { get; set; }
 
         public abstract void CalcularAtributos();
