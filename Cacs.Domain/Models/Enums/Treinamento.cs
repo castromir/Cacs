@@ -3,7 +3,7 @@ namespace Cacs.Domain.Models.Enums
     /// <summary>
     ///     Representa os 5 possiveis niveis de treinamento do personagem em uma pericia.
     /// </summary>
-    public enum NivelTreinamento
+    public enum Treinamento
     {
         /// <summary>
         /// Nivel padrao de treinamento.

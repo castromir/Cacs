@@ -19,6 +19,7 @@ dotnet_diagnostic.SA1111.severity = none
 dotnet_diagnostic.SA1201.severity = none
 dotnet_diagnostic.SA1010.severity = none
 dotnet_diagnostic.SA1516.severity = none
+dotnet_diagnostic.SA1602.severity = none
 
 # Evita usings não utilizados (warning)
 dotnet_diagnostic.IDE0005.severity = warning

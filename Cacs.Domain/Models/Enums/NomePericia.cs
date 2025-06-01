@@ -1,0 +1,34 @@
+namespace Cacs.Domain.Models.Enums
+{
+    public enum NomePericia
+    {
+        Acrobacia,
+        Adestramento,
+        Artes,
+        Atletismo,
+        Atualidades,
+        Ciencias,
+        Crime,
+        Diplomacia,
+        Enganacao,
+        Fortitude,
+        Furtividade,
+        Iniciativa,
+        Intimidacao,
+        Intuicao,
+        Investigacao,
+        Luta,
+        Medicina,
+        Ocultismo,
+        Percepcao,
+        Pilotagem,
+        Pontaria,
+        Profissao,
+        Reflexos,
+        Religiao,
+        Sobrevivencia,
+        Tatica,
+        Tecnologia,
+        Vontade,
+    }
+}

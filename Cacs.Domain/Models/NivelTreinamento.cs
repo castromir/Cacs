@@ -1,15 +1,15 @@
-using Cacs.Domain.Models.Enums;
-
 namespace Cacs.Domain.Models
 {
-    public class NivelDeTreinamento
+    using Cacs.Domain.Models.Enums;
+
+    public class NivelTreinamento
     {
-        public NivelDeTreinamento(NivelTreinamento nivelTreinamento)
+        public NivelTreinamento(Treinamento nivelTreinamento)
         {
             this.Nivel = nivelTreinamento;
         }
 
-        public NivelTreinamento Nivel { get; }
+        public Treinamento Nivel { get; }
 
         /// <summary>
         /// Obtem o bonus de treinamento baseado no nivel de treinamento.
@@ -24,11 +24,11 @@ namespace Cacs.Domain.Models
         {
             return this.Nivel switch
             {
-                NivelTreinamento.Destreinado => 0,
-                NivelTreinamento.Treinado => 2,
-                NivelTreinamento.Veterano => 4,
-                NivelTreinamento.Expert => 6,
-                NivelTreinamento.Mestre => 8,
+                Treinamento.Destreinado => 0,
+                Treinamento.Treinado => 2,
+                Treinamento.Veterano => 4,
+                Treinamento.Expert => 6,
+                Treinamento.Mestre => 8,
                 _ => throw new NotImplementedException(),
             };
         }
@@ -37,7 +37,7 @@ namespace Cacs.Domain.Models
         {
             if (acaoRequerida == "Analisar Terreno")
             {
-                return this.Nivel >= NivelTreinamento.Destreinado;
+                return this.Nivel >= Treinamento.Destreinado;
             }
 
             return true;

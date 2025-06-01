@@ -11,5 +11,18 @@ namespace Cacs.Models.Itens
         protected int Categoria { get; private set; }
         protected Proficiencia? Proficiencia { get; private set; }
 
+        protected Item(
+           string nome,
+           string descricao,
+           int espaco,
+           int categoria,
+           Proficiencia? proficiencia)
+        {
+            this.Nome = nome ?? throw new ArgumentNullException(nameof(nome));
+            this.Descricao = descricao ?? throw new ArgumentNullException(nameof(descricao));
+            this.Espaco = espaco;
+            this.Categoria = categoria;
+            this.Proficiencia = proficiencia;
+        }
     }
 }
