@@ -48,5 +48,50 @@ namespace Cacs.Domain.Models
         protected Habilidade()
         {
         }
+
+        public void DefinirNome(string nome)
+        {
+            if (string.IsNullOrWhiteSpace(nome))
+            {
+                throw new ArgumentException("O nome não pode ser vazio.", nameof(nome));
+            }
+
+            this.Nome = nome;
+        }
+
+        public void DefinirDescricao(string descricao)
+        {
+            if (string.IsNullOrWhiteSpace(descricao))
+            {
+                throw new ArgumentException("A descrição não pode ser vazia.", nameof(descricao));
+            }
+
+            this.Descricao = descricao;
+        }
+
+        public void DefinirFonte(FonteHabilidade fonte)
+        {
+            this.Fonte = fonte;
+        }
+
+        public void DefinirClasseRequerida(ClasseBase classe)
+        {
+            this.ClasseRequerida = classe;
+        }
+
+        public void DefinirTrilhaRequerida(Trilha trilha)
+        {
+            this.TrilhaRequerida = trilha;
+        }
+
+        public void DefinirOrigemRequerida(Origem origem)
+        {
+            this.OrigemRequerida = origem;
+        }
+
+        public void DefinirPoderParanormalRequerido(PoderParanormal poderParanormal)
+        {
+            this.PoderParanormalRequerido = poderParanormal;
+        }
     }
 }

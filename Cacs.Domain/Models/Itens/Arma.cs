@@ -1,4 +1,4 @@
-namespace Cacs.Models.Itens
+namespace Cacs.Domain.Models.Itens
 {
     using Cacs.Domain.Models.Enums;
 

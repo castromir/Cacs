@@ -13,9 +13,10 @@ namespace Cacs.Domain.Models
             this.Valor = 1;
         }
 
-        public void Modificar(int modificador)
-        {
+        public void DefinirAtributo(int valor) =>
+            this.Valor = valor;
+
+        public void Modificar(int modificador) =>
             this.Valor += modificador;
-        }
     }
 }

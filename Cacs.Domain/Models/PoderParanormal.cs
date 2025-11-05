@@ -23,5 +23,45 @@ namespace Cacs.Domain.Models
         protected PoderParanormal()
         {
         }
+
+        public void DefinirNome(string nome)
+        {
+            if (string.IsNullOrWhiteSpace(nome))
+            {
+                throw new ArgumentException("O nome não pode ser vazio.", nameof(nome));
+            }
+
+            this.Nome = nome;
+        }
+
+        public void DefinirDescricao(string descricao)
+        {
+            if (string.IsNullOrWhiteSpace(descricao))
+            {
+                throw new ArgumentException("A descrição não pode ser vazia.", nameof(descricao));
+            }
+
+            this.Descricao = descricao;
+        }
+
+        public void DefinirAfinidade(string afinidade)
+        {
+            if (string.IsNullOrWhiteSpace(afinidade))
+            {
+                throw new ArgumentException("A afinidade não pode ser vazia.", nameof(afinidade));
+            }
+
+            this.Afinidade = afinidade;
+        }
+
+        public void DefinirPrerequisito(int prerequisito)
+        {
+            if (prerequisito < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(prerequisito), "O pré-requisito não pode ser negativo.");
+            }
+
+            this.Prerequisito = prerequisito;
+        }
     }
 }

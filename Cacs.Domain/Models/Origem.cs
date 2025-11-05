@@ -3,14 +3,14 @@ namespace Cacs.Domain.Models
     public class Origem
     {
         public Guid Id { get; private set; }
+        public string Nome { get; private set; } = string.Empty;
+        public string Descricao { get; private set; } = string.Empty;
+        public Habilidade Habilidade { get; private set; } = null!;
 
         public static readonly List<Pericia> Pericias = [];
-        public string Nome { get; } = string.Empty;
-        public string Descricao { get; } = string.Empty;
-        public string Habilidade { get; } = string.Empty;
-        required public IReadOnlyCollection<Pericia> PericiasTreinadas { get; init; }
+        public IReadOnlyCollection<Pericia> PericiasTreinadas { get; private set; } = null!;
 
-        public Origem(string nome, string descricao, IEnumerable<Pericia> periciasTreinadas, string habilidade)
+        public Origem(string nome, string descricao, IEnumerable<Pericia> periciasTreinadas, Habilidade habilidade)
         {
             if (periciasTreinadas.Count() != 2)
             {
@@ -19,8 +19,37 @@ namespace Cacs.Domain.Models
 
             this.Nome = nome ?? throw new ArgumentNullException(nameof(nome));
             this.Descricao = descricao ?? throw new ArgumentNullException(nameof(descricao));
-            this.Habilidade = habilidade ?? throw new ArgumentNullException(nameof(habilidade));
+            this.Habilidade = habilidade;
             this.PericiasTreinadas = periciasTreinadas.ToList().AsReadOnly();
+        }
+
+        protected Origem()
+        {
+        }
+
+        public void DefinirNome(string nome)
+        {
+            if (string.IsNullOrWhiteSpace(nome))
+            {
+                throw new ArgumentException("O nome não pode ser vazio.", nameof(nome));
+            }
+
+            this.Nome = nome;
+        }
+
+        public void DefinirDescricao(string descricao)
+        {
+            if (string.IsNullOrWhiteSpace(descricao))
+            {
+                throw new ArgumentException("A descrição não pode ser vazia.", nameof(descricao));
+            }
+
+            this.Descricao = descricao;
+        }
+
+        public void DefinirHabilidade(Habilidade habilidade)
+        {
+            this.Habilidade = habilidade;
         }
     }
 }
