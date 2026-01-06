@@ -9,7 +9,7 @@ export default function RootLayout({
     return (
         <html lang="pt-BR">
             <body className={`${roboto.className}`}>
-                <header className="p-4 font-bold">CACS</header>
+                <header className="text-2xl p-4 font-bold">CACS</header>
                 {children}
             </body>
         </html>
