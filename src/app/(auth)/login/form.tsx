@@ -9,15 +9,17 @@ import * as React from "react"
 
 import { useState } from 'react';
 
-import {
+/*import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select"*/
 
-export function SelectLogin( {
+
+// Usar a funcao select depois
+/*export function SelectLogin( {
     value,
   onChange,
 }: {
@@ -42,22 +44,50 @@ export function SelectLogin( {
       </SelectContent>
     </Select>
   )
+}*/
+
+import { createClient } from '@/src/lib/supabase/client'
+
+export function GoogleLoginButton() {
+  const supabase = createClient()
+
+  const login = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
+    })
+  }
+
+  return (
+    <Button onClick={login}>
+      Entrar com Google
+    </Button>
+  )
 }
 
 
 export const LoginForm = () => {
-  const [usuario, setUsuario] = useState("");
+  const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
   const onSubmit = (e: React.FormEvent) => {
       e.preventDefault();
-      console.log(usuario, senha);
+      console.log(email, senha);
   }
     return (
       <form onSubmit={onSubmit} className="space-y-8 w-[400px]"> 
         <div className="grid w-full gap-1.5">
-          <Label htmlFor="usuario">Usuário</Label>
-          <SelectLogin value={usuario} onChange={setUsuario}/>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
         </div>
 
         <div className="grid w-full items-center gap-1.5">
@@ -72,8 +102,9 @@ export const LoginForm = () => {
         </div> 
 
         <div className="grid w-full items-center">
-          <Button>Login</Button>  
+          {/*<Button type="submit">Login</Button>*/}
+          <GoogleLoginButton />
         </div>
       </form>
     )
-}
+} 
