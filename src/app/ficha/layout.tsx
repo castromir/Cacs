@@ -1,16 +1,26 @@
 import { Atributos } from "../components/info/header/Atributos";
 import { TestesResistencia } from "../components/info/header/TestesResistencia";
+import { Label } from "@/src/app/components/ui/label"
+import { Input } from "../components/ui/input";
 
 export default function FichaLayout() {
   return (
     <section className="flex gap-8 items-start">
 
       {/* CARD ESQUERDO */}
-      <section className="w-[711.6px] rounded-lg border overflow-hidden">
+      <section className="w-[711.6px]">
 
         {/* HEADER */}
-        <header className="flex gap-12 border-b p-4 bg-zinc-50">
+        <header className="flex gap-12 border-b border-pink-400 p-4">
           <h2 className="sr-only">Atributos e Testes de Resistência</h2>
+          <div>
+            <Label htmlFor="nome">Nome</Label>
+            <Input
+                        id="email"
+                        type="email"
+                      />    
+          </div>
+
           <div>  
             <Atributos
               initialData={{
@@ -54,23 +64,29 @@ export default function FichaLayout() {
       </section>
 
       {/* CARD DIREITO */}
-      <section className="flex-1 max-w-md rounded-lg border overflow-hidden">
+      <section className="flex-1 max-w-md">
 
         {/* NAVBAR (HEADER) */}
-        <header className="border-b bg-zinc-50">
+        <header>
           <nav className="flex">
-            <button className="px-4 py-2 font-medium border-b-2 border-black">
-              Aba 1
+            <button className="px-4 py-2 font-medium border-b-2 border-pink-400">
+              FAVORITOS
             </button>
             <button className="px-4 py-2 text-zinc-500">
-              Aba 2
+              HABILIDADES
+            </button>
+            <button className="px-4 py-2 text-zinc-500">
+              RITUAIS
+            </button>
+            <button className="px-4 py-2 text-zinc-500">
+              INVENTÁRIO
             </button>
           </nav>
         </header>
 
         {/* CONTEÚDO DINÂMICO */}
         <section className="p-6">
-          Conteúdo da aba selecionada
+          Kit de primeiros socorros
         </section>
       </section>
 

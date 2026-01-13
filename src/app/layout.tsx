@@ -8,7 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={roboto.className}>
+      <body className="{roboto.className} text-white bg-[#121212]">
         <header className="text-2xl p-4 font-bold">
           CACS
         </header>
