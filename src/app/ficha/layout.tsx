@@ -1,64 +1,79 @@
-import { Atributos } from "../components/info/atributos/Atributos";
+import { Atributos } from "../components/info/header/Atributos";
+import { TestesResistencia } from "../components/info/header/TestesResistencia";
 
-export default function FichaLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function FichaLayout() {
   return (
-    <main className="grid grid-cols-2">
-        <section>
-            <h2 className="sr-only">Conteúdo estático</h2>
-            <section>
-                <h2 className="sr-only">Informações Básicas</h2>
+    <section className="flex gap-8 items-start">
 
-                <section>
-                    <h2 className="sr-only">Atributos</h2>
-                    <Atributos
-                        initialData={{
-                            forca: 3,
-                            agilidade: 2,
-                            intelecto: 4,
-                            vigor: 1,
-                            presenca: 3,
-                            instinto: 0,
-                        }}
-                    />
-                </section>
+      {/* CARD ESQUERDO */}
+      <section className="w-[711.6px] rounded-lg border overflow-hidden">
 
-                <section>
-                    <h2 className="sr-only">Testes de Resistência</h2>
-                </section>
+        {/* HEADER */}
+        <header className="flex gap-12 border-b p-4 bg-zinc-50">
+          <h2 className="sr-only">Atributos e Testes de Resistência</h2>
+          <div>  
+            <Atributos
+              initialData={{
+              forca: 3,
+              agilidade: 2,
+              intelecto: 4,
+              vigor: 1,
+              presenca: 3,
+              instinto: 0,
+              }}
+            />   
+          </div>
 
-                <section>
-                    <h2 className="sr-only">NEX/Nível, Deslocamento e Iniciativa</h2>
-                </section>
+          <div>  
+            <TestesResistencia
+              initialData={{
+              fortitude: 3,
+              reflexos: 2,
+              vontade: 4,
+              }}
+            />   
+          </div>
+        </header>
 
-                <section>
-                    <h2 className="sr-only">Recursos</h2>
-                </section>
+        {/* BODY */}
+        <section className="grid grid-cols-2 gap-6 p-6">
+          
+          {/* INFORMAÇÕES BÁSICAS */}
+          <section>
+            <h2 className="sr-only">Informações Básicas</h2>
+            {/* conteúdo */}
+          </section>
 
-                <section>
-                    <h2 className="sr-only">Defesa</h2>
-                </section>
-            </section>
+          {/* PERÍCIAS */}
+          <section>
+            <h2 className="sr-only">Perícias</h2>
+            {/* conteúdo */}
+          </section>
 
-            <section>
-                <h2 className="sr-only">Perícias</h2>
-            </section>
         </section>
-        
-        <aside>
-            <h2 className="sr-only">Conteúdo dinâmico</h2>
-            Conteúdo Variável
-            <nav>
-                <h2 className="sr-only">Barra de Navegação</h2>
-            </nav>
+      </section>
 
-            <section>
-                <h2 className="sr-only">Conteúdo da aba</h2>
-            </section>
-        </aside>
-    </main>
+      {/* CARD DIREITO */}
+      <section className="flex-1 max-w-md rounded-lg border overflow-hidden">
+
+        {/* NAVBAR (HEADER) */}
+        <header className="border-b bg-zinc-50">
+          <nav className="flex">
+            <button className="px-4 py-2 font-medium border-b-2 border-black">
+              Aba 1
+            </button>
+            <button className="px-4 py-2 text-zinc-500">
+              Aba 2
+            </button>
+          </nav>
+        </header>
+
+        {/* CONTEÚDO DINÂMICO */}
+        <section className="p-6">
+          Conteúdo da aba selecionada
+        </section>
+      </section>
+
+    </section>
   );
-} 
+}

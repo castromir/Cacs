@@ -86,3 +86,6 @@ function Atributo({ label, value, onChange }: AtributoProps) {
     </li>
   )
 }
+//711.6  327.2
+//353.2 881.2
+// 500 880.4
