@@ -13,7 +13,7 @@ export default function RootLayout({
           CACS
         </header>
 
-        <main className="mx-auto max-w-7xl px-10">
+        <main className="mx-auto max-w-7xl px-10 ">
           {children}
         </main>
       </body>

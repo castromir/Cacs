@@ -22,16 +22,7 @@ export default function FichaLayout() {
           </div>
 
           <div>  
-            <Atributos
-              initialData={{
-              forca: 3,
-              agilidade: 2,
-              intelecto: 4,
-              vigor: 1,
-              presenca: 3,
-              instinto: 0,
-              }}
-            />   
+            <Atributos /> 
           </div>
 
           <div>  
