@@ -1,7 +1,2 @@
 export default function FichaPage() {
-  return (
-    <h1>
-        Deu certo!
-    </h1>
-  );
 } 

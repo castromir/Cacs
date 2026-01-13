@@ -1,9 +1,9 @@
 'use client'
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label"
-import { SelectGroup, SelectLabel } from "@/components/ui/select";
+import { Button } from "@/src/app/components/ui/button";
+import { Input } from "@/src/app/components/ui/input";
+import { Label } from "@/src/app/components/ui/label"
+import { SelectGroup, SelectLabel } from "@/src/app/components/ui/select";
 
 import * as React from "react"
 
