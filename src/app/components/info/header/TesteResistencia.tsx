@@ -1,12 +1,12 @@
 import { EditableField } from "../../editable/EditableField"
 
-type AtributoProps = {
+type TesteResistenciaProps = {
   label: string
   value: number
   onSave: (value: number) => void
 }
 
-export function Atributo({ label, value, onSave }: AtributoProps) {
+export function TesteResistencia({ label, value, onSave }: TesteResistenciaProps) {
   return (
     <li className="flex flex-col items-center">
       <span className="w-10 text-center">{label}</span>

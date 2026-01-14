@@ -9,12 +9,22 @@ export type AtributosData = {
   instinto: number
 }
 
+export type TestesResistenciaData = {
+  fortitude: number
+  reflexos: number
+  vontade: number
+}
+
 type FichaState = {
   atributos: AtributosData
+  testesResistencia: TestesResistenciaData
 
   // ações
   setAtributo: (key: keyof AtributosData, value: number) => void
   setAtributos: (atributos: AtributosData) => void
+
+  setTesteResistencia: (key: keyof TestesResistenciaData, value: number) => void
+  setTestesResistencia: (testes: TestesResistenciaData) => void
 }
 
 export const useFichaStore = create<FichaState>((set) => ({
@@ -27,6 +37,12 @@ export const useFichaStore = create<FichaState>((set) => ({
     instinto: 0,
   },
 
+  testesResistencia: {
+    fortitude: 0,
+    reflexos: 0,
+    vontade: 0,
+  },
+
   setAtributo: (key, value) =>
     set((state) => ({
       atributos: {
@@ -37,4 +53,15 @@ export const useFichaStore = create<FichaState>((set) => ({
 
   setAtributos: (atributos) =>
     set({ atributos }),
+
+  setTesteResistencia: (key, value) =>
+    set((state) => ({
+      testesResistencia: {
+        ...state.testesResistencia,
+        [key]: value,
+      },
+    })),
+
+  setTestesResistencia: (testesResistencia) =>
+    set({ testesResistencia }),
 }))

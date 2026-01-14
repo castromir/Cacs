@@ -2,21 +2,21 @@
 
 import { useState } from 'react'
 
-type EditableFieldProps<T> = {
-  value: T
-  onSave: (value: T) => void
+type EditableFieldProps = {
+  value: string | number
+  onSave: (value: string | number) => void
   type?: 'text' | 'number'
   className?: string
 }
 
-export function EditableField<T extends string | number>({
+export function EditableField({
   value,
   onSave,
   type = 'text',
   className,
-}: EditableFieldProps<T>) {
+}: EditableFieldProps) {
   const [editing, setEditing] = useState(false)
-  const [draft, setDraft] = useState<T>(value)
+  const [draft, setDraft] = useState<string | number>(value)
 
   function startEdit() {
     setDraft(value)
@@ -39,19 +39,20 @@ export function EditableField<T extends string | number>({
         autoFocus
         type={type}
         value={draft}
-        onChange={(e) =>
-          setDraft(
-            (type === 'number'
+        onChange={(e) => {
+          const nextValue =
+            type === 'number'
               ? Number(e.target.value)
-              : e.target.value) as T
-          )
-        }
+              : e.target.value
+
+          setDraft(nextValue)
+        }}
         onBlur={confirm}
         onKeyDown={(e) => {
           if (e.key === 'Enter') confirm()
           if (e.key === 'Escape') cancel()
         }}
-         className={`
+        className={`
           bg-transparent
           border-none
           outline-none
@@ -66,7 +67,7 @@ export function EditableField<T extends string | number>({
   return (
     <span
       onClick={startEdit}
-      className={`cursor-pointer ${className}`}
+      className={`cursor-pointer ${className ?? ''}`}
     >
       {value}
     </span>

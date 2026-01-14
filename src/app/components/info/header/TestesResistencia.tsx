@@ -1,73 +1,32 @@
-'use client'
+"use client" 
 
-import { useState } from 'react'
+import { useFichaStore } from "@/src/app/store/fichaStore"
+import { EditableField } from "../../editable/EditableField"
+import { TesteResistencia } from "@/src/app/components/info/header/TesteResistencia";
 
-export type TestesResistenciaData = {
-  fortitude: number
-  reflexos: number
-  vontade: number
-}
-
-type Props = {
-  initialData: TestesResistenciaData
-}
-
-export function TestesResistencia({ initialData }: Props) {
-  const [testesResistencia, setTestesResistencia] = useState<TestesResistenciaData>(initialData)
-
-  function update<K extends keyof TestesResistenciaData>(
-    key: K,
-    value: number
-  ) {
-    setTestesResistencia((prev) => ({
-      ...prev,
-      [key]: value,
-    }))
-  }
+export function TestesResistencia() {
+  const testesResistencia = useFichaStore((state) => state.testesResistencia)
+  const setTesteResistencia = useFichaStore((state) => state.setTesteResistencia)
 
   return (
     <section>
-      <ul className='flex gap-4'>
-        <Atributo
+      <ul className="flex gap-4">
+        <TesteResistencia
           label="FRT"
           value={testesResistencia.fortitude}
-          onChange={(v) => update('fortitude', v)}
+          onSave={(v) => setTesteResistencia('fortitude', v)}
         />
-        <Atributo
+        <TesteResistencia
           label="REF"
           value={testesResistencia.reflexos}
-          onChange={(v) => update('reflexos', v)}
+          onSave={(v) => setTesteResistencia('reflexos', v)}
         />
-        <Atributo
+        <TesteResistencia
           label="VON"
           value={testesResistencia.vontade}
-          onChange={(v) => update('vontade', v)}
+          onSave={(v) => setTesteResistencia('vontade', v)}
         />
       </ul>
     </section>
   )
 }
-
-type TestesResistenciaProps = {
-  label: string
-  value: number
-  onChange: (value: number) => void
-}
-
-function Atributo({ label, value, onChange }: TestesResistenciaProps) {
-  return (
-    <li className="flex flex-col items-center">
-      <span className="w-10">{label}</span>
-
-      <input
-        type="number"
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-6 text-center"
-      />
-    </li>
-  )
-}
-//711.6  327.2
-//353.2 881.2
-// 500 880.4
