@@ -1,4 +1,4 @@
-import { EditableField } from "../../editable/EditableField"
+import { EditableNumber } from "../../editable/EditableNumber"
 
 type AtributoProps = {
   label: string
@@ -11,9 +11,8 @@ export function Atributo({ label, value, onSave }: AtributoProps) {
     <li className="flex flex-col items-center">
       <span className="w-10 text-center">{label}</span>
 
-      <EditableField
+      <EditableNumber
         value={value}
-        type="number"
         onSave={(v) => onSave(v as number)}
         className="w-10 text-center"
       />

@@ -2,6 +2,7 @@ import { Atributos } from "../components/info/header/Atributos";
 import { TestesResistencia } from "../components/info/header/TestesResistencia";
 import { Label } from "@/src/app/components/ui/label"
 import { Input } from "../components/ui/input";
+import { Identidade } from "../components/info/header/Identidade";
 
 export default function FichaLayout() {
   return (
@@ -14,11 +15,7 @@ export default function FichaLayout() {
         <header className="flex gap-12 border-b border-pink-400 p-4">
           <h2 className="sr-only">Atributos e Testes de Resistência</h2>
           <div>
-            <Label htmlFor="nome">Nome</Label>
-            <Input
-                        id="email"
-                        type="email"
-                      />    
+            <Identidade />  
           </div>
 
           <div>  
@@ -26,13 +23,7 @@ export default function FichaLayout() {
           </div>
 
           <div>  
-            <TestesResistencia
-              initialData={{
-              fortitude: 3,
-              reflexos: 2,
-              vontade: 4,
-              }}
-            />   
+            <TestesResistencia />   
           </div>
         </header>
 

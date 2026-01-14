@@ -1,7 +1,6 @@
 "use client" 
 
 import { useFichaStore } from "@/src/app/store/fichaStore"
-import { EditableField } from "../../editable/EditableField"
 import { Atributo } from "@/src/app/components/info/header/Atributo";
 
 export function Atributos() {

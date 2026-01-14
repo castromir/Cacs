@@ -2,31 +2,21 @@
 
 import { useState } from 'react'
 
-type EditableFieldProps = {
-  value: string | number
-  onSave: (value: string | number) => void
-  type?: 'text' | 'number'
+type EditableFieldProps<T extends string | number> = {
+  value: T
+  onSave: (value: T) => void
+  type: T extends number ? 'number' : 'text'
   className?: string
 }
 
-export function EditableField({
+export function EditableField<T extends string | number>({
   value,
   onSave,
-  type = 'text',
+  type,
   className,
-}: EditableFieldProps) {
+}: EditableFieldProps<T>) {
   const [editing, setEditing] = useState(false)
-  const [draft, setDraft] = useState<string | number>(value)
-
-  function startEdit() {
-    setDraft(value)
-    setEditing(true)
-  }
-
-  function cancel() {
-    setEditing(false)
-    setDraft(value)
-  }
+  const [draft, setDraft] = useState<T>(value)
 
   function confirm() {
     onSave(draft)
@@ -39,25 +29,26 @@ export function EditableField({
         autoFocus
         type={type}
         value={draft}
-        onChange={(e) => {
-          const nextValue =
-            type === 'number'
+        onChange={(e) =>
+          setDraft(
+            (type === 'number'
               ? Number(e.target.value)
-              : e.target.value
-
-          setDraft(nextValue)
-        }}
+              : e.target.value) as T
+          )
+        }
+        onFocus={(e) => {
+  const input = e.currentTarget
+  input.scrollLeft = 0
+}}
         onBlur={confirm}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') confirm()
-          if (e.key === 'Escape') cancel()
-        }}
         className={`
           bg-transparent
           border-none
+          shadow-none
           outline-none
           focus:outline-none
           focus:ring-0
+          appearance-none
           ${className ?? ''}
         `}
       />
@@ -65,10 +56,7 @@ export function EditableField({
   }
 
   return (
-    <span
-      onClick={startEdit}
-      className={`cursor-pointer ${className ?? ''}`}
-    >
+    <span onClick={() => setEditing(true)} className={className}>
       {value}
     </span>
   )
