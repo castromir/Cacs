@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Cacs.Application.Dtos;
 using Cacs.Application.Mappers;
 using Cacs.Application.Repositories;
@@ -21,6 +22,14 @@ namespace Cacs.Application.Services
 
             return player is null
                 ? null
-                : PlayerMapper.ToDto(player); }
+                : PlayerMapper.ToDto(player);
+        }
+
+        public async Task<PlayerDto> CriarAsync(PlayerDto playerDto)
+        {
+            var player = PlayerMapper.ToEntity(playerDto);
+            var createdPlayer = await _playerRepository.CriarAsync(player);
+            return PlayerMapper.ToDto(createdPlayer);
+        }
     }
 }

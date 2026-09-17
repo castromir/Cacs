@@ -19,5 +19,6 @@ namespace Cacs.Application.Mappers
                 player.Nome,
                 categorias);
         }
+
     }
 }
