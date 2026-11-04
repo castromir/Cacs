@@ -37,4 +37,11 @@ dotnet format --verify-no-changes
 
 # Próximos Passos - Categoria
 
-- Corrigir erro de deixar valor nulo na categoria. Quando o usuário apaga o valor na categoria, o sistema deveria tratar como 0. Tratar 0 como fallback, e deixar null como erro de aplicação apenas.
+| Prioridade | Mudança | Motivo |
+|---|---|---|
+| 1 | Criar o caso de uso `MudarCategoria` | Centralizar a operação |
+| 2 | Retornar um resultado explícito | Simplificar o tratamento de erros |
+| 3 | Revisar o limite do grupo | Garantir que a regra esteja correta |
+| 4 | Proteger o `Restaurar` | Evitar reconstrução de personagens inválidos |
+| 5 | Criar testes da Application | Validar o fluxo completo |
+| 6 | Tipar os contratos SignalR | Reduzir erros de comunicação |

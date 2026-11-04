@@ -1,6 +1,7 @@
 @page "/"
 @rendermode InteractiveServer
 @implements IAsyncDisposable
+@using System.Globalization
 @inject NavigationManager Navigation
 @inject PlayerService PlayerService
 
@@ -98,6 +99,7 @@
                                    min="0"
                                    class="w-full max-w-28 rounded-lg border-2 border-slate-600 bg-slate-900 px-3 py-2 text-center text-xl outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                                    value="@category.Quantidade"
+                                   @key="ChaveInput(category.Nivel)"
                                    @onchange="e => UpdateCategoryAsync(category.Nivel, e)" />
                         </div>
                     }
@@ -114,6 +116,7 @@
     private IReadOnlyList<PlayerDto> _players = [];
     private PlayerDto? _playerSelecionado;
     private GrupoResumoDto? _grupo;
+    private readonly Dictionary<CategoriaNivel, int> _revisaoInput = [];
 
     protected override async Task OnInitializedAsync()
     {
@@ -164,9 +167,13 @@
             : null;
     }
 
+    private (CategoriaNivel Nivel, int Revisao) ChaveInput(CategoriaNivel nivel) =>
+        (nivel, _revisaoInput.GetValueOrDefault(nivel));
+
     private async Task CarregarPlayerAsync(Guid playerId)
     {
         _erro = null;
+        _revisaoInput.Clear();
         _playerSelecionado = await PlayerService.ObterAsync(playerId);
         _grupo = await PlayerService.ObterGrupoResumoAsync();
     }
@@ -270,16 +277,9 @@
             return;
         }
 
-        var valor = e.Value?.ToString();
-
-        int quantidade;
-
-        if (string.IsNullOrWhiteSpace(valor))
+        if (!TentarLerQuantidade(e.Value, out var novaQuantidade))
         {
-            quantidade = 0;
-        }
-        else if (!int.TryParse(valor, out quantidade))
-        {
+            IncrementarRevisao(nivel);
             return;
         }
 
@@ -289,7 +289,7 @@
                 "UpdateCategory",
                 _playerSelecionado.Id,
                 nivel,
-                quantidade);
+                novaQuantidade);
 
             _erro = null;
         }
@@ -297,6 +297,30 @@
         {
             _erro = MensagemDeErro(ex);
         }
+
+        IncrementarRevisao(nivel);
+    }
+
+    private void IncrementarRevisao(CategoriaNivel nivel)
+    {
+        _revisaoInput[nivel] = _revisaoInput.GetValueOrDefault(nivel) + 1;
+    }
+
+    private static bool TentarLerQuantidade(object? bruto, out int quantidade)
+    {
+        var texto = bruto?.ToString();
+
+        if (string.IsNullOrWhiteSpace(texto))
+        {
+            quantidade = 0;
+            return true;
+        }
+
+        return int.TryParse(
+            texto,
+            NumberStyles.Integer,
+            CultureInfo.InvariantCulture,
+            out quantidade);
     }
 
     private static string MensagemDeErro(Exception ex)
