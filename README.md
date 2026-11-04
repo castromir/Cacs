@@ -34,3 +34,7 @@ dotnet run --project Cacs.Web
 ```bash
 dotnet format --verify-no-changes
 ```
+
+# Próximos Passos - Categoria
+
+- Corrigir erro de deixar valor nulo na categoria. Quando o usuário apaga o valor na categoria, o sistema deveria tratar como 0. Tratar 0 como fallback, e deixar null como erro de aplicação apenas.

@@ -28,7 +28,7 @@
                 <label class="flex flex-col gap-2 text-sm text-slate-400">
                     Jogador
                     <select class="rounded-lg border-2 border-slate-600 bg-slate-900 px-3 py-2 text-base text-slate-100 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30"
-                            value="@_eu?.Id"
+                            value="@_playerSelecionado?.Id"
                             @onchange="OnPlayerChangedAsync">
                         @foreach (var player in _players)
                         {
@@ -38,20 +38,20 @@
                 </label>
             </div>
 
-            @if (_eu is not null)
+            @if (_playerSelecionado is not null)
             {
                 <section class="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
                     <div class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3">
                         <p class="text-xs uppercase tracking-wide text-slate-500">Limite</p>
-                        <p class="mt-1 text-2xl font-semibold">@_eu.LimiteTotal</p>
+                        <p class="mt-1 text-2xl font-semibold">@_playerSelecionado.LimiteTotal</p>
                     </div>
                     <div class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3">
                         <p class="text-xs uppercase tracking-wide text-slate-500">Utilizados</p>
-                        <p class="mt-1 text-2xl font-semibold">@_eu.PontosUtilizados</p>
+                        <p class="mt-1 text-2xl font-semibold">@_playerSelecionado.PontosUtilizados</p>
                     </div>
                     <div class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3">
                         <p class="text-xs uppercase tracking-wide text-slate-500">Disponíveis</p>
-                        <p class="mt-1 text-2xl font-semibold">@_eu.PontosDisponiveis</p>
+                        <p class="mt-1 text-2xl font-semibold">@_playerSelecionado.PontosDisponiveis</p>
                     </div>
                 </section>
             }
@@ -84,10 +84,10 @@
                 </p>
             }
 
-            @if (_eu is not null)
+            @if (_playerSelecionado is not null)
             {
                 <div class="grid grid-cols-2 gap-6 sm:grid-cols-4">
-                    @foreach (var category in _eu.Categorias)
+                    @foreach (var category in _playerSelecionado.Categorias)
                     {
                         <div @key="category.Nivel" class="flex flex-col items-center gap-3">
                             <div class="flex h-28 w-full max-w-28 items-center justify-center rounded-xl border-2 border-slate-600 bg-slate-900 text-3xl font-bold">
@@ -112,7 +112,7 @@
     private string _status = "Conectando...";
     private string? _erro;
     private IReadOnlyList<PlayerDto> _players = [];
-    private PlayerDto? _eu;
+    private PlayerDto? _playerSelecionado;
     private GrupoResumoDto? _grupo;
 
     protected override async Task OnInitializedAsync()
@@ -167,7 +167,7 @@
     private async Task CarregarPlayerAsync(Guid playerId)
     {
         _erro = null;
-        _eu = await PlayerService.ObterAsync(playerId);
+        _playerSelecionado = await PlayerService.ObterAsync(playerId);
         _grupo = await PlayerService.ObterGrupoResumoAsync();
     }
 
@@ -223,9 +223,9 @@
         {
             _grupo = grupo;
 
-            if (_eu is not null && player.Id == _eu.Id)
+            if (_playerSelecionado is not null && player.Id == _playerSelecionado.Id)
             {
-                _eu = player;
+                _playerSelecionado = player;
             }
 
             _erro = null;
@@ -261,14 +261,24 @@
         }
     }
 
-    private async Task UpdateCategoryAsync(CategoriaNivel nivel, ChangeEventArgs e)
+    private async Task UpdateCategoryAsync(
+        CategoriaNivel nivel,
+        ChangeEventArgs e)
     {
-        if (_connection is null || _eu is null)
+        if (_connection is null || _playerSelecionado is null)
         {
             return;
         }
 
-        if (!int.TryParse(e.Value?.ToString(), out var quantidade))
+        var valor = e.Value?.ToString();
+
+        int quantidade;
+
+        if (string.IsNullOrWhiteSpace(valor))
+        {
+            quantidade = 0;
+        }
+        else if (!int.TryParse(valor, out quantidade))
         {
             return;
         }
@@ -277,9 +287,10 @@
         {
             await _connection.InvokeAsync(
                 "UpdateCategory",
-                _eu.Id,
+                _playerSelecionado.Id,
                 nivel,
                 quantidade);
+
             _erro = null;
         }
         catch (Exception ex)

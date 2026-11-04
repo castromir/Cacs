@@ -4,7 +4,7 @@ namespace Cacs.Application.Dtos
 {
     public record CategoriaDto(
         CategoriaNivel Nivel,
-        int Quantidade,
+        int? Quantidade,
         int Pontos
     );
 }
