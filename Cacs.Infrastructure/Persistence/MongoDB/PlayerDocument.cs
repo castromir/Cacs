@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Cacs.Infrastructure.Persistence.MongoDB
 {
     public class PlayerDocument

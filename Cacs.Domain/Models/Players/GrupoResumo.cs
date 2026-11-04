@@ -10,7 +10,7 @@ public sealed record GrupoResumo(
     {
         var lista = players.ToList();
 
-        var limiteTotal = lista.Count * 16;
+        var limiteTotal = lista.Count * 16 ; // tem que mudar esse 16 aqui, nao deixar hard coded TODO
         var pontosUtilizados = lista.Sum(p => p.Pontos);
         var pontosDisponiveis = limiteTotal - pontosUtilizados;
 

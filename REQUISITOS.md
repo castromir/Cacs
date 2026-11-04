@@ -1,5 +1,7 @@
 # Requisitos CACS
 
+**OBS:** Para redução de escopo, se considera usuário e player a mesma coisa.
+
 ## Requisitos Funcionais
 
 - **RF01:** O sistema deve permitir que o usuário faça login utilizando nome de usuário e senha válidos.

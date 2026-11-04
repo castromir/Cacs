@@ -17,8 +17,10 @@ namespace Cacs.Application.Mappers
             return new PlayerDto(
                 player.Id,
                 player.Nome,
-                categorias);
+                categorias,
+                player.LimiteTotal,
+                player.Pontos,
+                player.PontosDisponiveis);
         }
-
     }
 }

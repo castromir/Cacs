@@ -1,13 +1,16 @@
-using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Cacs.Application.Repositories;
+using Cacs.Application.Services;
 using Cacs.Infrastructure.Persistence.MongoDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 namespace Cacs.Infrastructure;
@@ -19,6 +22,8 @@ public static class DependencyInjection
         IConfiguration configuration,
         IHostEnvironment environment)
     {
+        ConfigureMongoSerializers();
+
         var mongoSettings = configuration
        .GetSection("MongoDbSettings")
        .Get<MongoDbSettings>();
@@ -30,6 +35,8 @@ public static class DependencyInjection
             mongoSettings.DatabaseName);
 
         services.AddSingleton<IMongoClient>(mongoClient);
+
+        services.AddScoped<PlayerService>();
 
         services.AddSingleton<IMongoDatabase>(mongoDatabase);
 
@@ -69,5 +76,11 @@ public static class DependencyInjection
         app.UseResponseCompression();
 
         return app;
+    }
+
+    private static void ConfigureMongoSerializers()
+    {
+        BsonSerializer.TryRegisterSerializer(
+            new GuidSerializer(GuidRepresentation.Standard));
     }
 }

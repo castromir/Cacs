@@ -71,15 +71,14 @@ public class MongoPlayerRepository : IPlayerRepository
 
     private static Player ToDomain(PlayerDocument document)
     {
-        var player = Player.Criar(document.Nome);
+        var categorias = document.Categorias
+            .Select(c => new Categoria(
+                (CategoriaNivel)c.Nivel,
+                c.Quantidade));
 
-        foreach (var categoria in document.Categorias)
-        {
-            player.MudarCategoria(
-                (CategoriaNivel)categoria.Nivel,
-                categoria.Quantidade);
-        }
-
-        return player;
+        return Player.Restaurar(
+            document.Id,
+            document.Nome,
+            categorias);
     }
 }

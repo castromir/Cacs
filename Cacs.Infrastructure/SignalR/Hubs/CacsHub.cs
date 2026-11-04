@@ -1,14 +1,38 @@
+using Cacs.Application.Services;
+using Cacs.Domain.Models.Players;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Cacs.Infrastructure.SignalR.Hubs;
 
 public class CacsHub : Hub
 {
-    public async Task UpdateCategory(string name, int value)
+    private readonly PlayerService _playerService;
+
+    public CacsHub(PlayerService playerService)
     {
+        _playerService = playerService;
+    }
+
+    public async Task UpdateCategory(
+        Guid playerId,
+        CategoriaNivel nivel,
+        int quantidade)
+    {
+        var cancellationToken = Context.ConnectionAborted;
+
+        var player = await _playerService.MudarCategoriaAsync(
+            playerId,
+            nivel,
+            quantidade,
+            cancellationToken);
+
+        var grupo = await _playerService.ObterGrupoResumoAsync(
+            cancellationToken);
+
         await Clients.All.SendAsync(
-            "CategoryUpdated",
-            name,
-            value);
+            "CategoriaAtualizada",
+            player,
+            grupo,
+            cancellationToken);
     }
 }
