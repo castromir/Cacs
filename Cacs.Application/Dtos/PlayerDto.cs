@@ -8,6 +8,9 @@ namespace Cacs.Application.Dtos
     public record PlayerDto(
         Guid Id,
         string Nome,
-        IReadOnlyList<CategoriaDto> Categorias
+        IReadOnlyList<CategoriaDto> Categorias,
+        int LimiteTotal,
+        int PontosUtilizados,
+        int PontosDisponiveis
     );  
 }

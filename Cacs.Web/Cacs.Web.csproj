@@ -5,6 +5,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cacs.Application\Cacs.Application.csproj" />
     <ProjectReference Include="..\Cacs.Infrastructure\Cacs.Infrastructure.csproj" />
   </ItemGroup>
 

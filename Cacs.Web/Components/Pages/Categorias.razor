@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @implements IAsyncDisposable
 @inject NavigationManager Navigation
+@inject PlayerService PlayerService
 
 <PageTitle>Categorias</PageTitle>
 
@@ -15,39 +16,179 @@
             </p>
         </header>
 
-        <div class="grid grid-cols-2 gap-6 sm:grid-cols-4">
-            @foreach (var category in _categories)
-            {
-                <div class="flex flex-col items-center gap-3">
-                    <div class="flex h-28 w-full max-w-28 items-center justify-center rounded-xl border-2 border-slate-600 bg-slate-900 text-3xl font-bold">
-                        @category.Name
-                    </div>
+        @if (_players.Count == 0)
+        {
+            <p class="rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+                Nenhum jogador encontrado. Confira se o MongoDB está em localhost:27017 e reinicie a aplicação.
+            </p>
+        }
+        else
+        {
+            <div class="mb-8 grid gap-4 sm:grid-cols-2">
+                <label class="flex flex-col gap-2 text-sm text-slate-400">
+                    Jogador
+                    <select class="rounded-lg border-2 border-slate-600 bg-slate-900 px-3 py-2 text-base text-slate-100 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30"
+                            value="@_eu?.Id"
+                            @onchange="OnPlayerChangedAsync">
+                        @foreach (var player in _players)
+                        {
+                            <option value="@player.Id">@player.Nome</option>
+                        }
+                    </select>
+                </label>
+            </div>
 
-                    <input type="number"
-                           class="w-full max-w-28 rounded-lg border-2 border-slate-600 bg-slate-900 px-3 py-2 text-center text-xl outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                           value="@category.Value"
-                           @onchange="e => UpdateCategoryAsync(category.Name, e)" />
+            @if (_eu is not null)
+            {
+                <section class="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
+                    <div class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3">
+                        <p class="text-xs uppercase tracking-wide text-slate-500">Limite</p>
+                        <p class="mt-1 text-2xl font-semibold">@_eu.LimiteTotal</p>
+                    </div>
+                    <div class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3">
+                        <p class="text-xs uppercase tracking-wide text-slate-500">Utilizados</p>
+                        <p class="mt-1 text-2xl font-semibold">@_eu.PontosUtilizados</p>
+                    </div>
+                    <div class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3">
+                        <p class="text-xs uppercase tracking-wide text-slate-500">Disponíveis</p>
+                        <p class="mt-1 text-2xl font-semibold">@_eu.PontosDisponiveis</p>
+                    </div>
+                </section>
+            }
+
+            @if (_grupo is not null)
+            {
+                <section class="mb-8 rounded-xl border border-slate-700 bg-slate-900 px-4 py-4">
+                    <h2 class="text-sm font-medium text-slate-300">Grupo</h2>
+                    <div class="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-3">
+                        <div>
+                            <p class="text-xs uppercase tracking-wide text-slate-500">Limite</p>
+                            <p class="mt-1 text-xl font-semibold">@_grupo.LimiteTotal</p>
+                        </div>
+                        <div>
+                            <p class="text-xs uppercase tracking-wide text-slate-500">Utilizados</p>
+                            <p class="mt-1 text-xl font-semibold">@_grupo.PontosUtilizados</p>
+                        </div>
+                        <div>
+                            <p class="text-xs uppercase tracking-wide text-slate-500">Disponíveis</p>
+                            <p class="mt-1 text-xl font-semibold">@_grupo.PontosDisponiveis</p>
+                        </div>
+                    </div>
+                </section>
+            }
+
+            @if (!string.IsNullOrEmpty(_erro))
+            {
+                <p class="mb-6 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                    @_erro
+                </p>
+            }
+
+            @if (_eu is not null)
+            {
+                <div class="grid grid-cols-2 gap-6 sm:grid-cols-4">
+                    @foreach (var category in _eu.Categorias)
+                    {
+                        <div @key="category.Nivel" class="flex flex-col items-center gap-3">
+                            <div class="flex h-28 w-full max-w-28 items-center justify-center rounded-xl border-2 border-slate-600 bg-slate-900 text-3xl font-bold">
+                                @category.Nivel
+                            </div>
+
+                            <input type="number"
+                                   min="0"
+                                   class="w-full max-w-28 rounded-lg border-2 border-slate-600 bg-slate-900 px-3 py-2 text-center text-xl outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                   value="@category.Quantidade"
+                                   @onchange="e => UpdateCategoryAsync(category.Nivel, e)" />
+                        </div>
+                    }
                 </div>
             }
-        </div>
+        }
     </div>
 </div>
 
 @code {
     private HubConnection? _connection;
     private string _status = "Conectando...";
-
-    private readonly List<CategoryState> _categories =
-    [
-        new("I"),
-        new("II"),
-        new("III"),
-        new("IV")
-    ];
+    private string? _erro;
+    private IReadOnlyList<PlayerDto> _players = [];
+    private PlayerDto? _eu;
+    private GrupoResumoDto? _grupo;
 
     protected override async Task OnInitializedAsync()
     {
+        _players = await PlayerService.ListarAsync();
+
+        var escolhido = ResolverPlayerInicial();
+        if (escolhido is not null)
+        {
+            await CarregarPlayerAsync(escolhido.Id);
+        }
+
         await ConnectAsync();
+    }
+
+    private PlayerDto? ResolverPlayerInicial()
+    {
+        if (_players.Count == 0)
+        {
+            return null;
+        }
+
+        var nome = ObterNomeDaQuery();
+        if (!string.IsNullOrWhiteSpace(nome))
+        {
+            var pelaQuery = _players.FirstOrDefault(
+                p => string.Equals(p.Nome, nome, StringComparison.OrdinalIgnoreCase));
+
+            if (pelaQuery is not null)
+            {
+                return pelaQuery;
+            }
+        }
+
+        return _players[0];
+    }
+
+    private string? ObterNomeDaQuery()
+    {
+        var query = new Uri(Navigation.Uri).Query;
+        if (string.IsNullOrEmpty(query))
+        {
+            return null;
+        }
+
+        var parsed = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(query);
+        return parsed.TryGetValue("nome", out var valores)
+            ? valores.FirstOrDefault()
+            : null;
+    }
+
+    private async Task CarregarPlayerAsync(Guid playerId)
+    {
+        _erro = null;
+        _eu = await PlayerService.ObterAsync(playerId);
+        _grupo = await PlayerService.ObterGrupoResumoAsync();
+    }
+
+    private async Task OnPlayerChangedAsync(ChangeEventArgs e)
+    {
+        if (!Guid.TryParse(e.Value?.ToString(), out var playerId))
+        {
+            return;
+        }
+
+        var escolhido = _players.FirstOrDefault(p => p.Id == playerId);
+        if (escolhido is null)
+        {
+            return;
+        }
+
+        Navigation.NavigateTo(
+            Navigation.GetUriWithQueryParameter("nome", escolhido.Nome),
+            replace: true);
+
+        await CarregarPlayerAsync(playerId);
     }
 
     private string GetStatusBadgeClasses() => _status switch
@@ -68,17 +209,26 @@
         _connection = new HubConnectionBuilder()
             .WithUrl(Navigation.ToAbsoluteUri("/hubs/cacs"))
             .WithAutomaticReconnect()
+            .AddJsonProtocol(options =>
+            {
+                options.PayloadSerializerOptions.PropertyNamingPolicy =
+                    System.Text.Json.JsonNamingPolicy.CamelCase;
+
+                options.PayloadSerializerOptions.Converters.Add(
+                    new System.Text.Json.Serialization.JsonStringEnumConverter());
+            })
             .Build();
 
-        _connection.On<string, int>("CategoryUpdated", (name, value) =>
+        _connection.On<PlayerDto, GrupoResumoDto>("CategoriaAtualizada", (player, grupo) =>
         {
-            var category = _categories.FirstOrDefault(c => c.Name == name);
+            _grupo = grupo;
 
-            if (category is not null)
+            if (_eu is not null && player.Id == _eu.Id)
             {
-                category.Value = value;
+                _eu = player;
             }
 
+            _erro = null;
             return InvokeAsync(StateHasChanged);
         });
 
@@ -111,26 +261,42 @@
         }
     }
 
-    private async Task UpdateCategoryAsync(string name, ChangeEventArgs e)
+    private async Task UpdateCategoryAsync(CategoriaNivel nivel, ChangeEventArgs e)
     {
-        if (_connection is null)
+        if (_connection is null || _eu is null)
         {
             return;
         }
 
-        if (!int.TryParse(e.Value?.ToString(), out var value))
+        if (!int.TryParse(e.Value?.ToString(), out var quantidade))
         {
             return;
         }
 
-        var category = _categories.FirstOrDefault(c => c.Name == name);
-
-        if (category is not null)
+        try
         {
-            category.Value = value;
+            await _connection.InvokeAsync(
+                "UpdateCategory",
+                _eu.Id,
+                nivel,
+                quantidade);
+            _erro = null;
+        }
+        catch (Exception ex)
+        {
+            _erro = MensagemDeErro(ex);
+        }
+    }
+
+    private static string MensagemDeErro(Exception ex)
+    {
+        var atual = ex;
+        while (atual.InnerException is not null)
+        {
+            atual = atual.InnerException;
         }
 
-        await _connection.InvokeAsync("UpdateCategory", name, value);
+        return atual.Message;
     }
 
     public async ValueTask DisposeAsync()
@@ -139,11 +305,5 @@
         {
             await _connection.DisposeAsync();
         }
-    }
-
-    private sealed class CategoryState(string name)
-    {
-        public string Name { get; } = name;
-        public int Value { get; set; }
     }
 }

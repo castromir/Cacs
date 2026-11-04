@@ -12,6 +12,10 @@ namespace Cacs.Domain.Models.Players
 
         public int Pontos => _categorias.Sum(c => c.Pontos);
 
+        public int LimiteTotal => MaxPontos;
+
+        public int PontosDisponiveis => LimiteTotal - Pontos;
+
         public string Nome { get; private set; } = string.Empty;
 
         private Player(string nome)
@@ -22,6 +26,20 @@ namespace Cacs.Domain.Models.Players
                     "O nome do jogador não pode ser vazio.",
                     nameof(nome));
             }
+
+            Nome = nome;
+        }
+
+        private Player(Guid id, string nome)
+        {
+            if (string.IsNullOrWhiteSpace(nome))
+            {
+                throw new ArgumentException(
+                    "O nome do jogador não pode ser vazio.",
+                    nameof(nome));
+            }
+
+            Id = id;
             Nome = nome;
         }
 
@@ -33,6 +51,18 @@ namespace Cacs.Domain.Models.Players
             player._categorias.Add(new Categoria(CategoriaNivel.II, 0));
             player._categorias.Add(new Categoria(CategoriaNivel.III, 0));
             player._categorias.Add(new Categoria(CategoriaNivel.IV, 0));
+
+            return player;
+        }
+
+        public static Player Restaurar(
+            Guid id,
+            string nome,
+            IEnumerable<Categoria> categorias)
+        {
+            var player = new Player(id, nome);
+
+            player._categorias.AddRange(categorias);
 
             return player;
         }
@@ -51,12 +81,12 @@ namespace Cacs.Domain.Models.Players
             }
 
             var pontosSemCategoria = Pontos - categoria.Pontos;
-            var novosPontos = (int)nivel * novaQuantidade;
+            var novosPontos = (int)categoria.Nivel * novaQuantidade;
 
-            if (pontosSemCategoria + novosPontos > MaxPontos)
+            if (pontosSemCategoria + novosPontos > LimiteTotal)
             {
                 throw new InvalidOperationException(
-                    "O jogador não pode ultrapassar 16 pontos.");
+                    $"O jogador não pode ultrapassar {LimiteTotal} pontos.");
             }
 
             categoria.AlterarQuantidade(novaQuantidade);
@@ -289,5 +319,5 @@ Quando encontrar uma classe vazia, faça estas perguntas nessa ordem:
         ↓
 10. Ela depende de outras classes?
         ↓
-11. Implemento os métodos
+11. Implemento os métodosg
 */

@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Cacs.Application\Cacs.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="3.11.1" />
+  </ItemGroup>
+
 </Project>
