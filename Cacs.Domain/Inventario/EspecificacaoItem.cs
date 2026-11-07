@@ -2,11 +2,11 @@ namespace Cacs.Domain.Inventario
 {
     public sealed record EspecificacaoItem
     {
-        protected string Nome { get; }
-        protected string? Descricao { get; }
-        protected int Espaco { get; }
-        protected Categoria CategoriaBase { get; }
-        protected TipoItem Classificacao { get; }
+        public string Nome { get; }
+        public string? Descricao { get; }
+        public int Espaco { get; }
+        public Categoria CategoriaBase { get; }
+        public TipoItem Classificacao { get; }
 
         public EspecificacaoItem(
             string nome,
