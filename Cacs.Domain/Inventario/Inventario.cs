@@ -4,45 +4,56 @@ namespace Cacs.Domain.Inventario
 {
     public class Inventario : IAggregateRoot
     {
-        private const int MaxPontosCategoria = 16; // Todo, não será hardcoded, será definido por meio da ficha.
+        private const int MaxPontosCategoria = 16;
+        private const int MaxEspaco = 20;
 
-        private const int MaxEspaco = 20; // Todo, não será hardcoded, será definido por meio da ficha.
-
-        private readonly List<Categoria> _categorias = [];
-
-        private List<ItemInventario> _itens = [];
+        private readonly List<ItemInventario> _itens = [];
 
         public IReadOnlyCollection<ItemInventario> Itens =>
-       _itens.AsReadOnly();
+            _itens.AsReadOnly();
 
-        public IReadOnlyCollection<Categoria> Categorias => _categorias;
-
-        // public int Pontos => _categorias.Sum(c => c.Pontos); // TODO, ajustar pontos por meio de itens
+        public IReadOnlyCollection<PontosCategoria> Categorias =>
+            _itens
+                .GroupBy(i => i.CaracteristicaComum.CategoriaBase)
+                .Select(g => new PontosCategoria(g.Key, g.Count()))
+                .ToList()
+                .AsReadOnly();
 
         public int LimiteTotalCategoria => MaxPontosCategoria;
 
         public int LimiteTotalEspaco => MaxEspaco;
 
-        // public int PontosDisponiveis => LimiteTotal - Pontos; // TODO, ajustar pontos por meio de itens
+        public int PontosUtilizados =>
+            Categorias.Sum(c => c.Pontos);
+
+        public int PontosDisponiveis =>
+            LimiteTotalCategoria - PontosUtilizados;
 
         private Inventario()
         {
         }
-        
-        public void AdicionarItem(
-            EspecificacaoItem especificacao,
-            int quantidade)
-        {
-            ArgumentNullException.ThrowIfNull(especificacao);
 
-            var item = ItemInventario.Criar(
-            quantidade,
-            especificacao);
+
+        public void AdicionarItem(CaracteristicaComumItem caracteristicaComum)
+        {
+            ArgumentNullException.ThrowIfNull(caracteristicaComum);
+
+            var item = ItemInventario.Criar(caracteristicaComum);
 
             _itens.Add(item);
         }
 
-        private void RemoverItem()
-        { }
+        public void RemoverItem(Guid itemInventarioId)
+        {
+            var item = _itens.FirstOrDefault(i => i.Id == itemInventarioId);
+
+            if (item is null)
+            {
+                throw new InvalidOperationException(
+                    "O item não pertence a este inventário.");
+            }
+
+            _itens.Remove(item);
+        }       
     }
 }

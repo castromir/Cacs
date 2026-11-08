@@ -4,38 +4,22 @@ namespace Cacs.Domain.Inventario
 {
     public sealed class ItemInventario : Entidade
     {
-        public EspecificacaoItem Especificacao { get; private set; }
+        public CaracteristicaComumItem CaracteristicaComum { get; private set; }
 
-        public int Quantidade { get; private set; }
+        public int Pontos => CaracteristicaComum.CategoriaBase.Custo;
 
-        public int Pontos =>
-            Especificacao.CategoriaBase.Custo * Quantidade;
+        public int EspacoOcupado => CaracteristicaComum.Espaco;
 
-        public int EspacoOcupado =>
-            Especificacao.Espaco * Quantidade;
-
-        private ItemInventario(
-            int quantidade,
-            EspecificacaoItem especificacao
-            )
+        private ItemInventario(CaracteristicaComumItem caracteristicaComum)
         {
-            Especificacao = especificacao;
-            Quantidade = quantidade;
+            CaracteristicaComum = caracteristicaComum;
         }
 
-        public static ItemInventario Criar(
-            int quantidade,
-            EspecificacaoItem especificacao
-            )
+        public static ItemInventario Criar(CaracteristicaComumItem caracteristicaComum)
         {
-            ArgumentNullException.ThrowIfNull(especificacao);
+            ArgumentNullException.ThrowIfNull(caracteristicaComum);
 
-            if (quantidade <= 0)
-            {
-                ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantidade);
-            }
-
-            return new ItemInventario(quantidade, especificacao);
+            return new ItemInventario(caracteristicaComum);
         }
     }
 }

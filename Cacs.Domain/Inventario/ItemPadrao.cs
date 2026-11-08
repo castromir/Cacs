@@ -1,16 +1,17 @@
+using Cacs.Domain.Inventario.Enums;
 using Cacs.Domain.Models.SeedWork;
 
 namespace Cacs.Domain.Inventario
 {
     public sealed class ItemPadrao : Entidade, IAggregateRoot
     {
-        public EspecificacaoItem Especificacao { get; private set; }
+        public CaracteristicaComumItem CaracteristicaComum { get; private set; }
 
         // Método (usar factory?) para criar um item padrão no Arsenal
         // Método para alterar um item no Arsenal
 
 
-        // O construtor de Item deve ser algo rígido, contendo todos os atributos de EspecificacaoItem, menos Descricao. Todo, colocar isso em requisitos.
+        // O construtor de Item deve ser algo rígido, contendo todos os atributos de CaracteristicaComumItem, menos Descricao. Todo, colocar isso em requisitos.
         private ItemPadrao(string nome)
         {
             if (string.IsNullOrWhiteSpace(nome))

@@ -1,19 +1,21 @@
+using Cacs.Domain.Inventario.Enums;
+
 namespace Cacs.Domain.Inventario
 {
-    public sealed record EspecificacaoItem
+    public sealed record CaracteristicaComumItem
     {
         public string Nome { get; }
         public string? Descricao { get; }
         public int Espaco { get; }
         public Categoria CategoriaBase { get; }
-        public TipoItem Classificacao { get; }
+        public DetalheItem Detalhe{ get; }
 
-        public EspecificacaoItem(
+        public CaracteristicaComumItem(
             string nome,
             string? descricao,
             int espaco,
             Categoria categoriaBase,
-            TipoItem classificacao)
+            DetalheItem detalhe)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(nome);
             ArgumentOutOfRangeException.ThrowIfNegative(espaco);
@@ -22,7 +24,7 @@ namespace Cacs.Domain.Inventario
             Descricao = descricao;
             Espaco = espaco;
             CategoriaBase = categoriaBase;
-            Classificacao = classificacao;
+            Detalhe = detalhe;
         }
     }
 }

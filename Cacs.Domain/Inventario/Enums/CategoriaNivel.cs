@@ -1,4 +1,4 @@
-namespace Cacs.Domain.Inventario
+namespace Cacs.Domain.Inventario.Enums
 {
     public enum CategoriaNivel
     {

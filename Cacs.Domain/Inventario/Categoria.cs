@@ -1,3 +1,5 @@
+using Cacs.Domain.Inventario.Enums;
+
 namespace Cacs.Domain.Inventario
 {
     public readonly record struct Categoria

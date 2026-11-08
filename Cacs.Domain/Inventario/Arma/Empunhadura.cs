@@ -7,6 +7,9 @@ namespace Cacs.Domain.Inventario
     public enum Empunhadura
     {
         UmaMao,
-        DuasMaos
+
+        DuasMaos,
+
+        Versatil
     }
 }
