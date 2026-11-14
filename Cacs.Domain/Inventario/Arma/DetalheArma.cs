@@ -14,7 +14,7 @@ namespace Cacs.Domain.Inventario.Arma
 
         public TipoDano TipoDano { get; }
 
-        public IReadOnlyCollection<Traco> Tracos;
+        public IReadOnlyCollection<Traco> Tracos { get; }
 
         public override TipoItem Tipo => TipoItem.Arma;
 
@@ -27,12 +27,28 @@ namespace Cacs.Domain.Inventario.Arma
             IReadOnlyCollection<Traco> tracos)
         {
             ArgumentNullException.ThrowIfNull(tracos);
+
+            if (!Enum.IsDefined(alcance))
+                throw new ArgumentOutOfRangeException(nameof(alcance));
+
+            if (!Enum.IsDefined(dominio))
+                throw new ArgumentOutOfRangeException(nameof(dominio));
+
+            if (!Enum.IsDefined(empunhadura))
+                throw new ArgumentOutOfRangeException(nameof(empunhadura));
+
+            if (!Enum.IsDefined(tipoArma))
+                throw new ArgumentOutOfRangeException(nameof(tipoArma));
+
+            if (!Enum.IsDefined(tipoDano))
+                throw new ArgumentOutOfRangeException(nameof(tipoDano));
+
             Alcance = alcance;
             Dominio = dominio;
             Empunhadura = empunhadura;
             TipoArma = tipoArma;
             TipoDano = tipoDano;
-            Tracos = tracos;
+            Tracos = Array.AsReadOnly(tracos.ToArray());
         }
     }
 }
