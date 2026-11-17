@@ -8,7 +8,7 @@ namespace Cacs.Domain.Inventario
         public string? Descricao { get; }
         public int Espaco { get; }
         public Categoria CategoriaBase { get; }
-        public DetalheItem Detalhe{ get; }
+        public DetalheItem Detalhe { get; }
 
         public CaracteristicaComumItem(
             string nome,
@@ -19,6 +19,7 @@ namespace Cacs.Domain.Inventario
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(nome);
             ArgumentOutOfRangeException.ThrowIfNegative(espaco);
+            ArgumentNullException.ThrowIfNull(detalhe);
 
             Nome = nome;
             Descricao = descricao;
