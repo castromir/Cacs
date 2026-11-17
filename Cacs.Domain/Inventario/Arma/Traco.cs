@@ -8,6 +8,13 @@ namespace Cacs.Domain.Inventario.Arma
 
         public Traco(TipoTraco tipo, string descricao)
         {
+            if (!Enum.IsDefined(tipo))
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(tipo),
+                    "O tipo informado é inválido.");
+            }
+
             ArgumentException.ThrowIfNullOrWhiteSpace(descricao);
 
             Tipo = tipo;

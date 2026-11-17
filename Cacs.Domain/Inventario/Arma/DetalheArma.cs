@@ -43,6 +43,9 @@ namespace Cacs.Domain.Inventario.Arma
             if (!Enum.IsDefined(tipoDano))
                 throw new ArgumentOutOfRangeException(nameof(tipoDano));
 
+            if (tracos.Any(t => string.IsNullOrWhiteSpace(t.Descricao) || !Enum.IsDefined(t.Tipo)))
+                throw new ArgumentException("A arma não pode conter um traço inválido.", nameof(tracos));
+
             Alcance = alcance;
             Dominio = dominio;
             Empunhadura = empunhadura;
