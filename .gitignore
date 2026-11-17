@@ -3,6 +3,9 @@ bin/
 obj/
 out/
 
+# Cursor
+.cursor/
+
 # VS local history and user-specific files
 .vs/
 *.suo

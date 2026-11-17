@@ -10,16 +10,31 @@ namespace Cacs.Domain.Inventario
 
         public int EspacoOcupado => CaracteristicaComum.Espaco;
 
-        private ItemInventario(CaracteristicaComumItem caracteristicaComum)
-        {
-            CaracteristicaComum = caracteristicaComum;
-        }
+        public static ItemInventario Criar(
+            CaracteristicaComumItem caracteristicaComum)
+            => new(caracteristicaComum);
 
-        public static ItemInventario Criar(CaracteristicaComumItem caracteristicaComum)
+        public static ItemInventario Restaurar(
+            Guid id,
+            CaracteristicaComumItem caracteristicaComum)
+            => new(id, caracteristicaComum);
+
+        private ItemInventario(
+            CaracteristicaComumItem caracteristicaComum)
         {
             ArgumentNullException.ThrowIfNull(caracteristicaComum);
 
-            return new ItemInventario(caracteristicaComum);
+            CaracteristicaComum = caracteristicaComum;
+        }
+
+        private ItemInventario(
+            Guid id,
+            CaracteristicaComumItem caracteristicaComum)
+            : base(id)
+        {
+            ArgumentNullException.ThrowIfNull(caracteristicaComum);
+
+            CaracteristicaComum = caracteristicaComum;
         }
     }
 }

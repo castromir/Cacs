@@ -29,6 +29,18 @@ namespace Cacs.Domain.Inventario
         public int PontosDisponiveis =>
             LimiteTotalCategoria - PontosUtilizados;
 
+        public int EspacosOcupados =>
+            _itens.Sum(i => i.EspacoOcupado);
+
+        public int EspacosDisponiveis =>
+            LimiteTotalEspaco - EspacosOcupados;
+
+        public bool EstaAcimaDoLimiteDePontos =>
+            PontosUtilizados > LimiteTotalCategoria;
+
+        public bool EstaAcimaDoLimiteDeEspaco =>
+            EspacosOcupados > LimiteTotalEspaco;
+
         private Inventario()
         {
         }
