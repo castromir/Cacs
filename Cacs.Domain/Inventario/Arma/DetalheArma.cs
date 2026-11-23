@@ -12,7 +12,9 @@ namespace Cacs.Domain.Inventario.Arma
 
         public TipoArma TipoArma { get; }
 
-        public TipoDano TipoDano { get; }
+        public Dano Dano { get; }
+
+        public Critico Critico { get; }
 
         public IReadOnlyCollection<Traco> Tracos { get; }
 
@@ -23,7 +25,8 @@ namespace Cacs.Domain.Inventario.Arma
             Dominio dominio,
             Empunhadura empunhadura,
             TipoArma tipoArma,
-            TipoDano tipoDano,
+            Dano dano,
+            Critico critico,
             IReadOnlyCollection<Traco> tracos)
         {
             ArgumentNullException.ThrowIfNull(tracos);
@@ -40,9 +43,6 @@ namespace Cacs.Domain.Inventario.Arma
             if (!Enum.IsDefined(tipoArma))
                 throw new ArgumentOutOfRangeException(nameof(tipoArma));
 
-            if (!Enum.IsDefined(tipoDano))
-                throw new ArgumentOutOfRangeException(nameof(tipoDano));
-
             if (tracos.Any(t => string.IsNullOrWhiteSpace(t.Descricao) || !Enum.IsDefined(t.Tipo)))
                 throw new ArgumentException("A arma não pode conter um traço inválido.", nameof(tracos));
 
@@ -50,7 +50,8 @@ namespace Cacs.Domain.Inventario.Arma
             Dominio = dominio;
             Empunhadura = empunhadura;
             TipoArma = tipoArma;
-            TipoDano = tipoDano;
+            Dano = dano;
+            Critico = critico;
             Tracos = Array.AsReadOnly(tracos.ToArray());
         }
     }
