@@ -6,7 +6,7 @@ namespace Cacs.Domain.Inventario
     {
         public CaracteristicaComumItem CaracteristicaComum { get; private set; }
 
-        public int Pontos => CaracteristicaComum.CategoriaBase.Custo;
+        public int Pontos => CaracteristicaComum.Pontos;
 
         public int EspacoOcupado => CaracteristicaComum.Espaco;
 
@@ -31,6 +31,13 @@ namespace Cacs.Domain.Inventario
             Guid id,
             CaracteristicaComumItem caracteristicaComum)
             : base(id)
+        {
+            ArgumentNullException.ThrowIfNull(caracteristicaComum);
+
+            CaracteristicaComum = caracteristicaComum;
+        }
+
+        internal void Substituir(CaracteristicaComumItem caracteristicaComum)
         {
             ArgumentNullException.ThrowIfNull(caracteristicaComum);
 
