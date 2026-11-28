@@ -15,11 +15,17 @@ Aplicação web privada para gerenciamento de fichas de RPG.
 
 ```
 Cacs/
-├── Cacs.Domain/        # Regras e conceitos centrais do domínio
-├── Cacs.Application/   # Casos de uso e orquestração
-├── Cacs.Infrastructure/  # (futuro) Persistência e integrações
-└── Cacs.Web/           # ASP.NET Core, Blazor, API e SignalR (futuro)
+├── Cacs.Domain/          # Regras e conceitos centrais do domínio
+├── Cacs.Application/     # Casos de uso e orquestração
+├── Cacs.Infrastructure/  # Persistência e integrações
+└── Cacs.Web/             # ASP.NET Core e Blazor
 ```
+
+## Documentação
+
+- [Linguagem e contextos](docs/linguagem.md)
+- [Requisitos do inventário](REQUISITOS.md)
+- [Roadmap](docs/roadmap.md)
 
 ## Desenvolvimento
 
@@ -34,14 +40,3 @@ dotnet run --project Cacs.Web
 ```bash
 dotnet format --verify-no-changes
 ```
-
-# Próximos Passos - Categoria
-
-| Prioridade | Mudança | Motivo |
-|---|---|---|
-| 1 | Criar o caso de uso `MudarCategoria` | Centralizar a operação |
-| 2 | Retornar um resultado explícito | Simplificar o tratamento de erros |
-| 3 | Revisar o limite do grupo | Garantir que a regra esteja correta |
-| 4 | Proteger o `Restaurar` | Evitar reconstrução de personagens inválidos |
-| 5 | Criar testes da Application | Validar o fluxo completo |
-| 6 | Tipar os contratos SignalR | Reduzir erros de comunicação |

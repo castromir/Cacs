@@ -1,904 +1,352 @@
-# Requisitos do Sistema — Gerenciador de Inventário RPG
+# Requisitos — Inventário
 
 **Projeto:** CACS  
-**Documento:** Requisitos funcionais, requisitos não funcionais e regras de negócio  
-**Versão:** 1.1  
-**Status:** Em elaboração  
-**Escopo atual:** Gerenciamento de inventário individual  
-**Público-alvo:** Grupo de RPG com até 7 usuários
+**Versão:** 2.1  
+**Status:** Incremento atual  
+**Escopo:** Incluir, alterar e remover itens do inventário individual, verificado com sete usuários já provisionados  
+**Público:** Grupo de RPG com até 7 usuários. A verificação deste incremento usa o grupo completo: 1 admin e 6 jogadores.
+
+A linguagem dos contextos está em [docs/linguagem.md](docs/linguagem.md). A ordem das próximas features está em [docs/roadmap.md](docs/roadmap.md).
+
+Este documento substitui a versão 1.1. A versão 2.1 troca a posse do inventário, neste incremento, do personagem para o usuário: personagem e ficha não existem, e a verificação usa sete usuários já provisionados, cada um com um inventário já criado. Saíram deste incremento a quantidade de unidades por entrada, a alteração de limites pelo jogador, o Arsenal, o item personalizado como fase separada, o inventário de veículo e o resumo de pontos do grupo. A aplicação, a infraestrutura e a interface ainda descrevem o modelo antigo e não realizam estes requisitos.
 
 ---
 
-## 1. Introdução
+## 1. Como as frases se separam
 
-### 1.1. Objetivo
+Cada frase ocupa um só lugar.
 
-Este documento especifica os requisitos funcionais, requisitos não funcionais e regras de negócio do sistema de gerenciamento de inventário de RPG.
+| Tipo | O que afirma | Fonte |
+|---|---|---|
+| Regra de negócio | Verdade do jogo, declarativa e atômica. Continua válida escrita fora do sistema. | *Business Rules Manifesto* (Business Rules Group); vocabulário e regras no espírito do SBVR (OMG) |
+| Requisito funcional | Função que o usuário observa ou comanda. | ISO/IEC/IEEE 29148:2018 |
+| Requisito não funcional | Qualidade ou restrição sobre como o sistema sustenta as funções. | ISO/IEC/IEEE 29148:2018, para requisitos de qualidade e restrições. Características nomeadas pela ISO/IEC 25010:2023 |
 
-O sistema será desenvolvido de forma incremental, permitindo a implementação de funcionalidades em módulos independentes e a ampliação progressiva de seu escopo.
+Critério prático:
 
-A primeira versão terá como objetivo o gerenciamento de inventários individuais previamente estabelecidos, permitindo consultar, adicionar, alterar e remover itens, respeitando os limites de categoria e espaço definidos pelas regras do RPG.
+- A frase fala do jogo, sem tela e sem banco: regra de negócio.
+- A frase fala do que o sistema faz diante do usuário: requisito funcional.
+- A frase fala de isolamento, preservação, clareza ou de uma restrição sobre a solução: requisito não funcional.
 
-O desenvolvimento posterior contemplará a criação de itens personalizados, a seleção de itens disponíveis no Arsenal, a aplicação de modificações nos itens e o gerenciamento de inventários compartilhados de veículos.
+O requisito cita a regra que operacionaliza. A fórmula fica na regra. O caso de uso, no fim, é cenário de verificação.
 
-### 1.2. Objetivo do produto
-
-O objetivo final do sistema é disponibilizar um gerenciador de fichas de RPG para um grupo de até 7 usuários.
-
-Cada usuário poderá gerenciar uma ou mais fichas. Cada ficha representará exatamente um personagem, que possuirá atributos, vida, habilidades e inventário.
-
-Cada personagem terá um inventário individual. Adicionalmente, o sistema poderá disponibilizar inventários compartilhados, como o inventário de um veículo, acessíveis aos integrantes do grupo.
-
-O desenvolvimento será realizado em etapas, iniciando pelo gerenciamento de inventários e evoluindo posteriormente para o gerenciamento completo de personagens e fichas.
-
-### 1.3. Referência para elaboração dos requisitos
-
-A especificação utiliza como referência os princípios de engenharia de requisitos da ISO/IEC/IEEE 29148:2018.
-
-Os requisitos devem ser necessários, claros, consistentes, viáveis e verificáveis. Sempre que possível, devem descrever o comportamento esperado do sistema sem determinar antecipadamente sua implementação.
-
-Referência: [ISO/IEC/IEEE 29148:2018 — Requirements Engineering](https://www.iso.org/standard/72089.html).
+Características exigidas pela ISO/IEC/IEEE 29148: necessário, não ambíguo, consistente, verificável, singular e livre de tecnologia de implementação.
 
 ---
 
 ## 2. Escopo
 
-### 2.1. Escopo atual — Gerenciamento de inventário
+### 2.1. Neste incremento
 
-O escopo atual contempla o gerenciamento de inventários individuais previamente estabelecidos.
+- Sete usuários já provisionados: um com papel admin e seis com papel jogador.
+- Um inventário individual já criado para cada um desses usuários.
+- Atuar como qualquer um dos sete e consultar o inventário de quem atua.
+- Incluir um item a partir dos dados informados por quem atua, sem catálogo.
+- Alterar os dados de um item do inventário.
+- Remover um item do inventário.
+- Calcular pontos de categoria e espaço, e apresentar a situação diante dos limites.
 
-O sistema deverá permitir:
+O inventário já nasce criado para o usuário. Quem atua não cria nem exclui inventário, usuário ou ficha.
 
-- Consultar o inventário individual disponibilizado ao usuário.
-- Consultar os itens cadastrados no inventário.
-- Adicionar itens ao inventário.
-- Alterar os dados dos itens cadastrados.
-- Remover itens do inventário.
-- Calcular os pontos de categoria utilizados.
-- Calcular o espaço utilizado.
-- Consultar os pontos e o espaço disponíveis.
-- Alterar os limites de categoria e espaço.
-- Identificar quando o inventário ultrapassar algum limite.
-- Persistir os itens selecionados e as alterações realizadas.
+### 2.2. Fora deste incremento
 
-O inventário será responsável por manter a consistência de seus itens e calcular os valores derivados.
-
-O usuário não será responsável por criar ou excluir inventários.
-
-### 2.2. Escopo futuro — Criação de itens personalizados
-
-Após a implementação funcional do inventário, será disponibilizada a criação de itens personalizados.
-
-O usuário poderá cadastrar itens próprios, informando suas características e custos.
-
-Os itens personalizados deverão respeitar as mesmas regras de categoria, quantidade, espaço e limites aplicáveis aos demais itens.
-
-Os itens personalizados serão persistidos separadamente dos itens padrão do Arsenal.
-
-### 2.3. Escopo futuro — Arsenal
-
-Após a implementação da criação de itens personalizados, será disponibilizado o Arsenal.
-
-O Arsenal será responsável por apresentar o catálogo de itens padrão disponíveis no RPG.
-
-O usuário poderá:
-
-- Consultar os itens disponíveis.
-- Buscar itens pelo nome.
-- Consultar as características dos itens.
-- Consultar seus custos de categoria.
-- Consultar o espaço ocupado.
-- Selecionar um item do Arsenal.
-- Adicionar o item selecionado ao inventário individual.
-
-Os itens padrão do Arsenal serão previamente cadastrados e persistidos em uma estrutura própria.
-
-A seleção de um item do Arsenal deverá criar um registro correspondente no inventário do usuário, sem alterar o cadastro original do item padrão.
-
-### 2.4. Escopo futuro — Modificações de itens
-
-O sistema deverá permitir aplicar modificações aos itens, conforme as regras do RPG.
-
-Uma modificação poderá:
-
-- Alterar características do item.
-- Conceder bônus.
-- Aumentar ou diminuir valores associados ao item.
-- Alterar o custo de categoria do item.
-- Possuir requisitos de aplicação.
-
-As modificações não serão consideradas itens independentes do inventário.
-
-Uma modificação deverá estar associada a um item e produzir seus efeitos sobre esse item.
-
-Exemplo: uma pistola pode receber uma mira laser, que concede determinado bônus e aumenta sua categoria em um nível.
-
-A aplicação de modificações deverá respeitar as regras de categoria e espaço do inventário.
-
-### 2.5. Escopo futuro — Inventário de veículo
-
-O sistema deverá permitir o gerenciamento de inventários compartilhados de veículos.
-
-O inventário de um veículo será acessível aos integrantes do grupo, além dos inventários individuais dos personagens.
-
-O inventário de veículo deverá possuir regras próprias de acesso e capacidade, conforme as características do veículo.
-
-Essa funcionalidade será implementada após a disponibilização do Arsenal.
-
-### 2.6. Funcionalidades fora do escopo atual
-
-As seguintes funcionalidades não serão implementadas na primeira versão:
-
-- Cadastro e autenticação de usuários.
-- Criação de fichas.
-- Gerenciamento de personagens.
-- Gerenciamento de atributos.
-- Gerenciamento de vida.
-- Gerenciamento de habilidades.
-- Associação de inventários a fichas.
-- Arsenal.
-- Criação de itens personalizados.
-- Modificações de itens.
-- Inventários compartilhados.
-- Inventários de veículos.
-- Gerenciamento de recursos compartilhados do grupo.
-
-Essas funcionalidades serão incorporadas em etapas posteriores, conforme a evolução do sistema.
-
-### 2.7. Evolução prevista do produto
-
-A evolução planejada do sistema é:
-
-1. Gerenciamento funcional de inventários individuais.
-2. Criação e gerenciamento de itens personalizados.
-3. Arsenal de itens padrão e seleção de itens para o inventário.
-4. Aplicação de modificações nos itens.
-5. Gerenciamento de inventários compartilhados de veículos.
-6. Gerenciamento de fichas e personagens.
-7. Gerenciamento de atributos, vida e habilidades.
-8. Associação de inventários às fichas.
-9. Gerenciamento de usuários e recursos compartilhados do grupo.
-
-A ordem representa o planejamento atual e poderá ser ajustada conforme as necessidades do projeto.
+Cadastro de usuário, alteração de papel, criação de ficha e de personagem, catálogo e Arsenal, habilidades, atributos, perícias, vida, sanidade, ficha completa, inventário compartilhado e inventário de veículo. A ordem está no roadmap. O papel admin não publica no catálogo neste incremento.
 
 ---
 
-## 3. Definições e terminologia
+## 3. Definições
 
 | Termo | Definição |
 |---|---|
-| Inventário | Conjunto de itens pertencentes a um personagem ou veículo. |
-| Inventário individual | Inventário associado exclusivamente a um personagem. |
-| Inventário compartilhado | Inventário acessível a mais de um usuário, conforme as permissões definidas. |
-| Item | Elemento individual cadastrado em um inventário. |
-| Item padrão | Item previamente cadastrado no catálogo do Arsenal. |
-| Item personalizado | Item criado pelo usuário para utilização em seu inventário. |
-| Arsenal | Catálogo de itens padrão disponíveis para consulta e seleção. |
-| Categoria | Classificação de um item que determina seu custo em pontos de categoria. |
-| Nível da categoria | Valor de I a V associado ao custo de categoria de um item. |
-| Quantidade | Número inteiro de unidades representadas por um item do inventário. |
-| Pontos do item | Custo de categoria calculado a partir do nível da categoria e da quantidade. |
-| Pontos utilizados | Soma dos pontos de categoria de todos os itens do inventário. |
-| Limite de categoria | Quantidade máxima de pontos de categoria definida para o inventário. |
-| Pontos disponíveis | Diferença entre o limite de categoria e os pontos utilizados. |
-| Espaço do item | Espaço ocupado por uma unidade do item. |
-| Espaço utilizado | Soma do espaço ocupado por todos os itens do inventário. |
-| Limite de espaço | Capacidade máxima de espaço definida para o inventário. |
-| Espaço disponível | Diferença entre o limite de espaço e o espaço utilizado. |
-| Modificação | Alteração aplicada a um item que modifica suas características ou efeitos. |
-| Ficha | Representação de um personagem no sistema. |
-| Personagem | Entidade do RPG representada por uma ficha. |
-| Usuário | Pessoa que utiliza o sistema para gerenciar suas fichas e inventários. |
-| Grupo | Conjunto de usuários que compartilham recursos ou informações no contexto do RPG. |
-| Veículo | Elemento do RPG que pode possuir um inventário compartilhado. |
+| Usuário | Pessoa que atua no sistema neste incremento. Tem um papel: admin ou jogador. |
+| Admin | Papel de um dos sete usuários provisionados. Neste incremento não publica no catálogo. |
+| Jogador | Papel de seis dos sete usuários provisionados. |
+| Inventário | Conjunto dos itens de um usuário, com limites e totais. |
+| Item de inventário | Uma entrada do inventário. Representa um item, não uma quantidade de unidades. |
+| Especificação do item | Nome, descrição, espaço, categoria e detalhe conforme o tipo. |
+| Categoria | Nível de custo do item. |
+| Custo da categoria | Valor numérico do nível. |
+| Pontos do item | Custo da categoria desse item. |
+| Pontos utilizados | Soma dos pontos dos itens do inventário. |
+| Pontos da categoria | Soma dos pontos dos itens daquela categoria. |
+| Limite de categoria | Máximo de pontos de categoria do inventário neste incremento: 16. |
+| Pontos disponíveis | Limite de categoria menos os pontos utilizados. |
+| Espaço do item | Espaço ocupado pela entrada. |
+| Espaço utilizado | Soma do espaço dos itens. |
+| Limite de espaço | Máximo de espaço do inventário neste incremento: 20. |
+| Espaço disponível | Limite de espaço menos o espaço utilizado. |
+| Situação do inventário | Dentro dos limites, em excesso de categoria, em excesso de espaço, ou nos dois excessos. |
+
+### 3.1. Vocabulário fechado
+
+**Categoria.** Sem categoria (custo 0), I (1), II (2), III (3), IV (4), V (5).
+
+**Tipo de item.** Acessório, arma, explosivo, munição, operacional, proteção.
+
+**Alcance.** Curto, médio, longo, extremo.
+
+**Domínio.** Simples, tático, pesado.
+
+**Empunhadura.** Uma mão, duas mãos, versátil.
+
+**Tipo de arma.** Arremesso, corpo a corpo, disparo, fogo.
+
+**Tipo de dano.** Balístico, conhecimento, corte, eletricidade, energia, fogo, frio, impacto, mental, medo, morte, perfuração, químico, sangue.
+
+**Tipo de traço.** Letal, ocultável.
+
+**Tipo de proteção.** Leve, pesada.
+
+**Tipo de munição.** Curtas, escopeta, flechas, granadas, longas.
 
 ---
 
-# 4. Requisitos funcionais
+## 4. Requisitos funcionais
 
-Os requisitos funcionais descrevem as funcionalidades e os comportamentos que o sistema deverá oferecer.
-
-## 4.1. Gerenciamento de inventário individual
-
-| ID | Requisito funcional | Prioridade |
+| ID | Requisito | Regras |
 |---|---|---|
-| RF01 | O sistema deve disponibilizar um inventário individual previamente estabelecido para cada personagem ou usuário provisionado. | Alta |
-| RF02 | O sistema deve permitir consultar o inventário individual disponibilizado ao usuário. | Alta |
-| RF03 | O sistema deve permitir consultar os itens cadastrados no inventário. | Alta |
-| RF04 | O sistema deve permitir adicionar itens ao inventário. | Alta |
-| RF05 | O sistema deve permitir informar os dados necessários para o cadastro de um item personalizado. | Alta |
-| RF06 | O sistema deve permitir consultar os dados de um item individualmente. | Média |
-| RF07 | O sistema deve permitir alterar os dados de um item cadastrado. | Alta |
-| RF08 | O sistema deve permitir remover um item do inventário. | Alta |
-| RF09 | O sistema deve permitir consultar os limites de categoria e espaço do inventário. | Alta |
-| RF10 | O sistema deve calcular os pontos de categoria utilizados pelo inventário. | Alta |
-| RF11 | O sistema deve calcular o espaço utilizado pelo inventário. | Alta |
-| RF12 | O sistema deve calcular os pontos de categoria disponíveis no inventário. | Alta |
-| RF13 | O sistema deve calcular o espaço disponível no inventário. | Alta |
-| RF14 | O sistema deve permitir alterar os limites de categoria e espaço do inventário. | Alta |
-| RF15 | O sistema deve identificar quando os pontos de categoria utilizados ultrapassarem o limite definido. | Alta |
-| RF16 | O sistema deve identificar quando o espaço utilizado ultrapassar o limite definido. | Alta |
-| RF17 | O sistema deve apresentar o estado atualizado do inventário após uma operação válida. | Alta |
-| RF18 | O sistema deve permitir consultar os itens e os valores calculados do inventário. | Alta |
+| RF01 | O sistema deve disponibilizar, para cada um dos sete usuários provisionados, um inventário individual já criado. | RN01, RN02, RN03 |
+| RF02 | O sistema deve permitir consultar o inventário do usuário que atua, com itens, limites, totais e situação. | RN21–RN25, RN34–RN37 |
+| RF03 | O sistema deve permitir consultar um item do inventário. | RN04 |
+| RF04 | O sistema deve permitir incluir um item a partir da especificação informada pelo usuário que atua. | RN05–RN18, RN26 |
+| RF05 | O sistema deve permitir alterar a especificação de um item do inventário e, na munição, a quantidade já utilizada. | RN05–RN18, RN26, RN27 |
+| RF06 | O sistema deve permitir remover um item do inventário. | RN28, RN29, RN30, RN31 |
+| RF07 | O sistema deve calcular os pontos utilizados, os pontos disponíveis e os pontos de cada categoria. | RN08, RN21, RN22, RN23 |
+| RF08 | O sistema deve calcular o espaço utilizado e o espaço disponível. | RN09, RN24, RN25 |
+| RF09 | O sistema deve apresentar a situação do inventário, distinguindo excesso de categoria e excesso de espaço. | RN35, RN36 |
+| RF10 | O sistema deve recusar inclusão ou alteração inválida e manter o inventário como estava. | RN26, RN32 |
+| RF11 | O sistema deve apresentar o inventário conforme o estado resultante de uma operação aceita. | RN33 |
+| RF12 | O sistema deve persistir o inventário e devolvê-lo após o encerramento da aplicação, com os mesmos itens, limites e totais. | RN04 |
+| RF13 | O sistema deve disponibilizar sete usuários já provisionados, um com papel admin e seis com papel jogador. | RST01 |
+| RF14 | O sistema deve permitir atuar como qualquer um desses sete usuários. | RN02, RN38 |
+| RF15 | O sistema deve aplicar a consulta, a inclusão, a alteração e a remoção ao inventário do usuário que atua. | RN01, RN02, RN38 |
 
-### 4.1.1. Dados de um item
+### 4.1. Dados informados na inclusão e na alteração
 
-O cadastro de um item deverá contemplar os seguintes dados:
-
-| Campo | Descrição |
+| Dado | Presença |
 |---|---|
-| Identificador | Identificação individual do item no inventário. |
-| Nome | Nome do item. |
-| Descrição | Descrição detalhada do item. |
-| Categoria | Categoria à qual o item pertence. |
-| Quantidade | Quantidade inteira de unidades representadas pelo item. |
-| Espaço | Espaço ocupado por uma unidade do item. |
+| Nome | Obrigatório |
+| Descrição | Opcional |
+| Categoria | Obrigatória, conforme o vocabulário |
+| Espaço | Obrigatório |
+| Detalhe do tipo | Obrigatório e compatível com o tipo |
+| Quantidade de munição já utilizada | Somente munição. Na inclusão, zero |
 
-Os itens personalizados poderão possuir características adicionais conforme a evolução do sistema.
+Arma: alcance, domínio, empunhadura, tipo de arma, dano, crítico e a lista de traços.
 
-### 4.1.2. Dados de um inventário
+Acessório: perícia a que se aplica e bônus. A perícia é um nome até o incremento de perícias.
 
-O inventário deverá possuir:
+Explosivo: alcance e dano.
 
-| Campo | Descrição |
-|---|---|
-| Identificador | Identificação individual do inventário. |
-| Limite de categoria | Quantidade máxima de pontos de categoria permitida. |
-| Limite de espaço | Capacidade máxima de espaço permitida. |
-| Itens | Conjunto de itens cadastrados no inventário. |
-| Pontos utilizados | Soma dos pontos de categoria dos itens. |
-| Espaço utilizado | Soma do espaço ocupado pelos itens. |
-| Pontos disponíveis | Diferença entre o limite de categoria e os pontos utilizados. |
-| Espaço disponível | Diferença entre o limite de espaço e o espaço utilizado. |
-| Situação do inventário | Indicação de conformidade ou excesso em relação aos limites. |
+Munição: tipo e capacidade. A quantidade já utilizada acompanha o item no inventário.
 
-Os valores de pontos utilizados, espaço utilizado, pontos disponíveis, espaço disponível e situação do inventário deverão ser calculados a partir dos dados do inventário.
+Proteção: tipo e bônus de defesa.
+
+Operacional: nenhum dado além da especificação comum.
+
+Dano: tipo e expressão. A expressão informa quantidade de dados, faces opcionais e bônus.
+
+Crítico: margem e multiplicador.
+
+Traço, quando houver: tipo e descrição.
 
 ---
 
-## 4.2. Gerenciamento de limites
+## 5. Requisitos não funcionais
 
-| ID | Requisito funcional | Prioridade |
+Característica de qualidade conforme a ISO/IEC 25010:2023.
+
+| ID | Característica | Requisito |
 |---|---|---|
-| RF19 | O sistema deve permitir alterar o limite de categoria de um inventário. | Alta |
-| RF20 | O sistema deve permitir alterar o limite de espaço de um inventário. | Alta |
-| RF21 | O sistema deve recalcular os valores disponíveis após a alteração de um limite. | Alta |
-| RF22 | O sistema deve permitir a alteração de um limite mesmo quando o novo valor resultar em excesso de categoria ou espaço. | Alta |
-| RF23 | O sistema deve apresentar um aviso quando a alteração de um limite resultar em inventário fora de limite. | Alta |
-| RF24 | O sistema deve manter os itens cadastrados após a alteração de um limite. | Alta |
+| RNF01 | Manutenibilidade (testabilidade) | As regras do inventário devem poder ser verificadas por teste automatizado, sem interface gráfica e sem serviço externo. |
+| RNF02 | Manutenibilidade (modularidade) | As regras do inventário devem permanecer independentes da interface e da tecnologia de persistência. |
+| RNF03 | Manutenibilidade (modificabilidade) | Incluir um item cuja especificação tenha sido copiada de um catálogo futuro deve reutilizar o mesmo cálculo de limites e de totais da inclusão informada pelo usuário. |
+| RNF04 | Confiabilidade | Uma operação recusada não deve deixar item incluído, alterado ou removido pela metade. |
+| RNF05 | Confiabilidade | Pontos e espaço consultados após recuperar o inventário devem corresponder aos itens recuperados. |
+| RNF06 | Segurança | A alteração do inventário de um usuário deve permanecer isolada dos inventários dos demais usuários. |
+| RNF07 | Usabilidade | Pontos utilizados, pontos disponíveis, espaço utilizado e espaço disponível devem aparecer como informações distintas. |
+| RNF08 | Usabilidade | A mensagem de recusa deve nomear a condição violada, em linguagem do jogo. |
+| RNF09 | Usabilidade | Excesso de categoria e excesso de espaço devem poder ser reconhecidos separadamente. |
 
----
+### 5.1. Restrições
 
-## 4.3. Criação de itens personalizados
-
-Os requisitos desta seção representam a próxima etapa de desenvolvimento.
-
-| ID | Requisito funcional |
+| ID | Restrição |
 |---|---|
-| RF25 | O sistema deve permitir criar itens personalizados para o inventário. |
-| RF26 | O sistema deve permitir informar o nome, a descrição, a categoria, a quantidade e o espaço do item personalizado. |
-| RF27 | O sistema deve permitir alterar os dados de um item personalizado. |
-| RF28 | O sistema deve permitir remover um item personalizado. |
-| RF29 | O sistema deve aplicar as mesmas regras de categoria, quantidade e espaço aos itens personalizados. |
-| RF30 | O sistema deve persistir os itens personalizados separadamente dos itens padrão do Arsenal. |
+| RST01 | Este incremento não inclui cadastro de usuário, alteração de papel, criação de ficha ou de personagem, nem criação ou exclusão de inventário. Os sete usuários e os seus inventários já nascem provisionados. |
+| RST02 | O limite de categoria e o limite de espaço deste incremento são os de RN19 e RN20. A alteração desses limites por quem atua fica fora do incremento. |
+| RST03 | O papel admin não acrescenta, neste incremento, função de catálogo. Admin e jogador operam o próprio inventário pelas mesmas regras. |
 
 ---
 
-## 4.4. Arsenal
+## 6. Regras de negócio
 
-Os requisitos desta seção representam a etapa posterior à criação de itens personalizados.
+### 6.1. Inventário e usuário
 
-| ID | Requisito funcional |
+Neste incremento não há personagem nem ficha. O inventário pertence ao usuário para o qual foi provisionado. O grupo do público continua de até sete pessoas. A população verificada neste incremento, um admin e seis jogadores, está em RST01.
+
+| ID | Regra |
 |---|---|
-| RF31 | O sistema deve disponibilizar um Arsenal contendo os itens padrão do RPG. |
-| RF32 | O sistema deve permitir consultar os itens disponíveis no Arsenal. |
-| RF33 | O sistema deve permitir buscar itens do Arsenal pelo nome. |
-| RF34 | O sistema deve permitir consultar a descrição, categoria, custo e espaço dos itens do Arsenal. |
-| RF35 | O sistema deve permitir selecionar um item do Arsenal para inclusão no inventário individual. |
-| RF36 | O sistema deve permitir informar a quantidade do item selecionado. |
-| RF37 | O sistema deve validar os limites do inventário antes de adicionar um item do Arsenal. |
-| RF38 | O sistema deve persistir a seleção do item no inventário sem alterar o cadastro original do item padrão. |
-| RF39 | O sistema deve permitir consultar os itens selecionados a partir do inventário individual. |
+| RN01 | Cada usuário possui um inventário individual. |
+| RN02 | Um inventário individual pertence a um único usuário. |
+| RN03 | O usuário não cria nem exclui o inventário. |
+| RN04 | Inventário e item de inventário possuem identidade própria. A identidade do item distingue o item dentro do inventário. |
+| RN38 | O papel do usuário, admin ou jogador, não altera a posse do inventário nem as regras de item, limite e total. |
 
----
+### 6.2. Especificação do item
 
-## 4.5. Modificações de itens
-
-Os requisitos desta seção representam uma etapa futura.
-
-| ID | Requisito funcional |
+| ID | Regra |
 |---|---|
-| RF40 | O sistema deve permitir consultar as modificações disponíveis para os itens. |
-| RF41 | O sistema deve permitir aplicar modificações compatíveis com um item. |
-| RF42 | O sistema deve permitir remover modificações aplicadas a um item. |
-| RF43 | O sistema deve calcular os efeitos das modificações aplicadas. |
-| RF44 | O sistema deve calcular o custo de categoria do item considerando suas modificações. |
-| RF45 | O sistema deve permitir consultar as modificações aplicadas a um item. |
-| RF46 | O sistema deve validar os requisitos de aplicação das modificações. |
-| RF47 | O sistema deve recalcular os pontos de categoria e o espaço do inventário após alterações nos itens modificados. |
+| RN05 | Todo item possui nome não vazio, uma categoria do vocabulário, espaço inteiro igual ou maior que zero e um detalhe compatível com o seu tipo. |
+| RN06 | A descrição do item pode ser omitida. |
+| RN07 | Uma entrada do inventário representa um item. Os pontos dessa entrada são o custo da categoria dela. |
+| RN08 | O custo da categoria é 0 para sem categoria, 1 para I, 2 para II, 3 para III, 4 para IV e 5 para V. |
+| RN09 | O espaço ocupado por uma entrada é o espaço informado na especificação. |
 
----
+### 6.3. Detalhe conforme o tipo
 
-## 4.6. Inventário de veículo
-
-Os requisitos desta seção representam uma etapa futura, posterior à disponibilização do Arsenal.
-
-| ID | Requisito funcional |
+| ID | Regra |
 |---|---|
-| RF48 | O sistema deve permitir disponibilizar um inventário compartilhado para um veículo. |
-| RF49 | O sistema deve permitir consultar os itens do inventário de veículo. |
-| RF50 | O sistema deve permitir adicionar itens ao inventário de veículo. |
-| RF51 | O sistema deve permitir alterar itens do inventário de veículo. |
-| RF52 | O sistema deve permitir remover itens do inventário de veículo. |
-| RF53 | O sistema deve permitir que os integrantes autorizados do grupo acessem o inventário de veículo. |
-| RF54 | O sistema deve controlar os limites de categoria e espaço do inventário de veículo. |
+| RN10 | Arma possui alcance, domínio, empunhadura, tipo de arma, dano e crítico. Cada traço presente possui tipo admitido e descrição não vazia. A lista de traços pode ser vazia. |
+| RN11 | O dano possui um tipo admitido e uma expressão cuja quantidade de dados é inteiro maior que zero. |
+| RN12 | A margem do crítico é um inteiro de 1 a 20. O multiplicador do crítico é um inteiro maior ou igual a 2. |
+| RN13 | Acessório informa a perícia a que se aplica, com nome não vazio, e um bônus inteiro maior que zero. |
+| RN14 | Explosivo possui alcance admitido e dano. |
+| RN15 | Munição possui um tipo admitido e capacidade inteira maior que zero. |
+| RN16 | A quantidade de munição já utilizada é um inteiro de zero até a capacidade, inclusive. Item de munição incluído começa com quantidade utilizada igual a zero. |
+| RN17 | Proteção possui tipo leve ou pesada e bônus de defesa inteiro maior que zero. |
+| RN18 | Item operacional não possui dado além da especificação comum. |
 
----
+### 6.4. Limites e totais
 
-## 4.7. Evolução futura — Fichas e personagens
-
-| ID | Requisito funcional |
+| ID | Regra |
 |---|---|
-| RF55 | O sistema deve permitir que um usuário gerencie uma ou mais fichas. |
-| RF56 | O sistema deve permitir criar uma ficha de personagem. |
-| RF57 | O sistema deve permitir consultar uma ficha de personagem. |
-| RF58 | O sistema deve permitir alterar os dados de uma ficha. |
-| RF59 | O sistema deve permitir excluir uma ficha. |
-| RF60 | Cada ficha deve representar exatamente um personagem. |
-| RF61 | Cada personagem deve possuir um inventário individual. |
-| RF62 | O sistema deve permitir consultar o inventário a partir da ficha do personagem. |
-| RF63 | O sistema deve permitir gerenciar os atributos do personagem. |
-| RF64 | O sistema deve permitir gerenciar as habilidades do personagem. |
-| RF65 | O sistema deve permitir controlar a vida do personagem. |
-| RF66 | O sistema deve calcular o limite de categoria conforme os atributos do personagem. |
-| RF67 | O sistema deve calcular o limite de espaço conforme os atributos do personagem. |
+| RN19 | O limite de categoria do inventário neste incremento é 16 pontos. |
+| RN20 | O limite de espaço do inventário neste incremento é 20. |
+| RN21 | Os pontos utilizados são a soma dos pontos dos itens. |
+| RN22 | Os pontos de uma categoria são a soma dos pontos dos itens dessa categoria. |
+| RN23 | Os pontos disponíveis são o limite de categoria menos os pontos utilizados. |
+| RN24 | O espaço utilizado é a soma do espaço dos itens. |
+| RN25 | O espaço disponível é o limite de espaço menos o espaço utilizado. |
 
----
+### 6.5. Inclusão, alteração e remoção
 
-## 4.8. Evolução futura — Usuários e grupo
-
-| ID | Requisito funcional |
+| ID | Regra |
 |---|---|
-| RF68 | O sistema deve permitir o cadastro de usuários. |
-| RF69 | O sistema deve permitir que os usuários acessem suas fichas. |
-| RF70 | O sistema deve permitir a formação de um grupo com até 7 usuários. |
-| RF71 | O sistema deve permitir consultar os recursos compartilhados do grupo. |
-| RF72 | O sistema deve permitir gerenciar os recursos compartilhados do grupo. |
-| RF73 | O sistema deve permitir compartilhar informações conforme as permissões definidas. |
+| RN26 | Inclusão ou alteração cujo resultado deixe os pontos utilizados acima do limite de categoria, ou o espaço utilizado acima do limite de espaço, é inválida. |
+| RN27 | A alteração vale para um item já presente. A especificação anterior deixa de compor os totais. Na munição, a quantidade já utilizada informada substitui a anterior e obedece RN16. |
+| RN28 | A remoção vale para um item já presente. |
+| RN29 | A remoção retira o item do inventário. |
+| RN30 | A remoção retira dos totais os pontos e o espaço daquele item. |
+| RN31 | Alteração ou remoção de item que não pertence ao inventário é inválida. |
+| RN32 | Operação inválida deixa o inventário como estava. |
+| RN33 | Após operação aceita, os totais e a situação correspondem aos itens presentes e aos limites. |
+
+### 6.6. Situação
+
+| ID | Regra |
+|---|---|
+| RN34 | O inventário está dentro dos limites quando os pontos utilizados são menores ou iguais a 16 e o espaço utilizado é menor ou igual a 20. |
+| RN35 | Há excesso de categoria quando os pontos utilizados são maiores que 16. |
+| RN36 | Há excesso de espaço quando o espaço utilizado é maior que 20. |
+| RN37 | Consultar o inventário ou um item não altera itens, limites nem totais. |
+
+RN35 e RN36 descrevem a situação observável. Neste incremento, inclusão e alteração que produziriam esses excessos são inválidas (RN26). A remoção permanece válida.
 
 ---
 
-# 5. Requisitos não funcionais
+## 7. Casos de uso
 
-Os requisitos não funcionais descrevem atributos de qualidade e restrições operacionais do sistema.
+Cenários de verificação dos requisitos. O ator é o usuário que atua, admin ou jogador.
 
-Os requisitos desta seção deverão ser verificáveis por meio de testes, inspeções ou evidências técnicas.
+### UC01 — Consultar inventário
 
-## 5.1. Arquitetura e manutenção
+**Requisitos:** RF02, RF03, RF07, RF08, RF09.
 
-| ID | Requisito não funcional | Prioridade |
+**Pré-condição:** o usuário que atua possui inventário já criado. Não existe ficha.
+
+1. O usuário pede o inventário.
+2. O sistema mostra os itens, os limites, os pontos, o espaço e a situação.
+
+**Pós-condição:** o inventário permanece como estava (RN37).
+
+### UC02 — Incluir item
+
+**Requisitos:** RF04, RF07, RF08, RF10, RF11.
+
+**Pré-condição:** o inventário existe.
+
+1. O usuário informa a especificação do item.
+2. O sistema confere a especificação e os limites.
+3. O sistema inclui o item e mostra o inventário atualizado.
+
+**Alternativas:** especificação inválida, ou resultado acima de um limite: o sistema recusa e o inventário permanece como estava.
+
+### UC03 — Alterar item
+
+**Requisitos:** RF05, RF07, RF08, RF10, RF11.
+
+**Pré-condição:** o item pertence ao inventário.
+
+1. O usuário indica o item e informa a nova especificação.
+2. O sistema confere a especificação e os limites, desconsiderando a contribuição anterior desse item.
+3. O sistema substitui os dados e mostra o inventário atualizado.
+
+**Alternativas:** as mesmas de UC02. Item ausente: o sistema recusa.
+
+### UC04 — Remover item
+
+**Requisitos:** RF06, RF07, RF08, RF11.
+
+**Pré-condição:** o item pertence ao inventário.
+
+1. O usuário indica o item.
+2. O sistema retira o item e mostra os totais sem a contribuição dele.
+
+**Alternativa:** item ausente: o sistema recusa e o inventário permanece como estava.
+
+### UC05 — Verificar a mesa de sete usuários
+
+**Requisitos:** RF01, RF13, RF14, RF15, RNF06.
+
+**Pré-condição:** os sete usuários e os sete inventários já estão provisionados. Não há ficha nem comando para criá-la.
+
+1. Confere-se um usuário com papel admin e seis com papel jogador.
+2. Cada usuário pede o próprio inventário, já criado.
+3. Um usuário inclui, altera ou remove um item no próprio inventário.
+4. Os inventários dos outros seis usuários permanecem como estavam.
+
+**Pós-condição:** não surge ficha, usuário nem inventário novo (RN03, RST01).
+
+---
+
+## 8. Critérios de aceitação
+
+| ID | Critério | Origem |
 |---|---|---|
-| RNF01 | O sistema deve permitir a evolução incremental de suas funcionalidades sem exigir a implementação antecipada dos módulos futuros. | Alta |
-| RNF02 | As regras de negócio devem ser independentes da interface gráfica. | Alta |
-| RNF03 | As regras de negócio devem ser independentes da tecnologia de persistência. | Alta |
-| RNF04 | A alteração de uma regra de negócio deve exigir mudanças apenas nos componentes afetados por essa regra. | Alta |
-| RNF05 | O sistema deve permitir a execução de testes automatizados sobre as regras de negócio sem depender da interface gráfica ou de serviços externos. | Alta |
-| RNF06 | O sistema deve permitir a evolução do inventário individual para inventários compartilhados sem exigir a reimplementação das regras comuns de gerenciamento de itens. | Alta |
-| RNF07 | O sistema deve permitir a evolução do modelo de limites para incorporar atributos do personagem sem exigir alterações desnecessárias nas regras de gerenciamento dos itens. | Alta |
-
-## 5.2. Integridade e consistência
-
-| ID | Requisito não funcional | Prioridade |
-|---|---|---|
-| RNF08 | O sistema deve manter a consistência dos dados do inventário após operações válidas. | Alta |
-| RNF09 | Uma operação inválida não deve deixar o inventário em um estado parcialmente alterado. | Alta |
-| RNF10 | Os dados calculados do inventário devem corresponder aos dados dos itens cadastrados. | Alta |
-| RNF11 | O sistema deve preservar a integridade dos dados durante a persistência e recuperação do inventário. | Alta |
-| RNF12 | O sistema deve manter a consistência entre o inventário e os itens persistidos. | Alta |
-
-## 5.3. Persistência
-
-| ID | Requisito não funcional | Prioridade |
-|---|---|---|
-| RNF13 | O sistema deve persistir os inventários e seus itens selecionados. | Alta |
-| RNF14 | O sistema deve permitir recuperar os dados persistidos após o encerramento da aplicação. | Alta |
-| RNF15 | A recuperação de um inventário deve preservar seus itens e limites configurados. | Alta |
-| RNF16 | O sistema deve manter os itens padrão do Arsenal separados dos itens selecionados nos inventários. | Alta |
-| RNF17 | A alteração de um item selecionado no inventário não deve modificar o cadastro original do item padrão do Arsenal. | Alta |
-| RNF18 | O sistema deve permitir a persistência independente dos itens padrão e dos itens personalizados. | Alta |
-
-## 5.4. Segurança e isolamento
-
-| ID | Requisito não funcional | Prioridade |
-|---|---|---|
-| RNF19 | O sistema deve impedir alterações não autorizadas nos dados persistidos. | Alta |
-| RNF20 | O sistema deve manter o isolamento dos dados pertencentes a diferentes inventários individuais. | Alta |
-| RNF21 | O sistema deve garantir que usuários não autorizados não possam alterar inventários de outros personagens. | Alta |
-| RNF22 | O sistema deve permitir acesso compartilhado apenas aos inventários explicitamente definidos como compartilhados. | Alta |
-
-Os mecanismos de autenticação e autorização serão especificados quando o módulo de usuários for implementado.
-
-## 5.5. Concorrência
-
-| ID | Requisito não funcional | Prioridade |
-|---|---|---|
-| RNF23 | O sistema deve preservar a consistência dos dados quando ocorrerem alterações concorrentes sobre o mesmo inventário. | Média |
-| RNF24 | O sistema deve impedir que alterações concorrentes resultem em perda silenciosa de dados. | Média |
-
-O mecanismo de controle de concorrência será definido durante a implementação da persistência.
-
-## 5.6. Usabilidade
-
-| ID | Requisito não funcional | Prioridade |
-|---|---|---|
-| RNF25 | A interface deve apresentar os pontos de categoria utilizados e disponíveis de forma compreensível. | Alta |
-| RNF26 | A interface deve apresentar o espaço utilizado e disponível de forma compreensível. | Alta |
-| RNF27 | O sistema deve informar ao usuário quando uma operação for rejeitada por violar uma regra de negócio. | Alta |
-| RNF28 | As mensagens de erro devem identificar a condição que impediu a operação, sem exigir que o usuário conheça detalhes internos da implementação. | Alta |
-| RNF29 | A interface deve apresentar avisos visíveis quando o inventário ultrapassar os limites de categoria ou espaço. | Alta |
-| RNF30 | Os avisos de excesso devem permitir identificar qual limite foi ultrapassado. | Alta |
+| CA01 | O usuário consulta o próprio inventário já criado, sem criar inventário e sem criar ficha. | RF01, RF02, RST01 |
+| CA02 | Um item com nome vazio, categoria fora do vocabulário, espaço negativo ou detalhe incompatível com o tipo é recusado. | RF04, RF10, RN05 |
+| CA03 | Um item cuja inclusão deixe os pontos acima de 16, ou o espaço acima de 20, é recusado, e o inventário anterior permanece. | RF10, RN26, RN32 |
+| CA04 | Após inclusão aceita, os pontos utilizados são a soma dos custos das categorias dos itens. | RF07, RN07, RN21 |
+| CA05 | Após inclusão aceita, o espaço utilizado é a soma do espaço dos itens. | RF08, RN24 |
+| CA06 | Alterar um item deixa de contar o custo e o espaço anteriores e passa a contar os novos. | RF05, RN27 |
+| CA07 | Alteração que deixe o inventário acima de qualquer limite é recusada, e o item permanece como estava. | RF10, RN26, RN32 |
+| CA08 | Remover um item retira os pontos e o espaço dele dos totais. | RF06, RN30 |
+| CA09 | Remover um item ausente é recusado. | RF06, RN31 |
+| CA10 | Munição incluída começa com quantidade utilizada zero. Quantidade utilizada acima da capacidade, ou negativa, é recusada. | RF04, RF05, RN16 |
+| CA11 | Arma com margem de crítico fora de 1 a 20, ou com multiplicador menor que 2, é recusada. | RF04, RN12 |
+| CA12 | Pontos de uma categoria são a soma dos custos dos itens dessa categoria. | RF07, RN22 |
+| CA13 | Excesso de categoria e excesso de espaço são reconhecíveis separadamente. | RF09, RNF09 |
+| CA14 | Depois de encerrar e abrir de novo, itens, limites e totais são os mesmos. | RF12, RNF05 |
+| CA15 | A mensagem de recusa nomeia a condição violada, em linguagem do jogo. | RNF08 |
+| CA16 | Os usuários provisionados são um admin e seis jogadores. Cada um encontra o próprio inventário já criado. | RF01, RF13, RN01 |
+| CA17 | Uma operação no inventário de um usuário deixa itens, limites e totais dos outros inventários como estavam. | RF15, RNF06, RN02 |
+| CA18 | Admin e jogador incluem, alteram e removem item no próprio inventário pelas mesmas regras. | RF14, RF15, RN38, RST03 |
 
 ---
 
-# 6. Regras de negócio
-
-As regras de negócio representam as condições e restrições que devem ser respeitadas independentemente da interface utilizada ou da tecnologia de persistência.
-
-## 6.1. Regras de provisionamento do inventário
-
-| ID | Regra de negócio |
-|---|---|
-| RN01 | Cada personagem deve possuir exatamente um inventário individual. |
-| RN02 | O inventário individual deve ser previamente estabelecido pelo sistema. |
-| RN03 | O usuário não deve criar ou excluir o inventário individual. |
-| RN04 | Todo inventário deve possuir um identificador único. |
-| RN05 | O inventário deve estar associado ao personagem ou usuário correspondente. |
-| RN06 | Um inventário individual não deve ser compartilhado entre personagens. |
-
-## 6.2. Regras de limite do inventário
-
-| ID | Regra de negócio |
-|---|---|
-| RN07 | O limite de categoria de um inventário não pode ser negativo. |
-| RN08 | O limite de espaço de um inventário não pode ser negativo. |
-| RN09 | O limite de categoria poderá variar conforme o personagem. |
-| RN10 | Na primeira versão, o limite de categoria será definido independentemente dos atributos do personagem. |
-| RN11 | Na primeira versão, o limite de espaço será inicialmente definido como 20. |
-| RN12 | O limite de espaço deverá ser definido de forma que possa ser substituído futuramente por um cálculo baseado nos atributos do personagem. |
-| RN13 | Os limites do inventário poderão ser alterados após sua criação. |
-| RN14 | A alteração de um limite poderá resultar em inventário fora de limite. |
-| RN15 | A alteração de um limite não deverá remover automaticamente os itens existentes. |
-| RN16 | A alteração de um limite deverá atualizar os valores disponíveis e a situação do inventário. |
-| RN17 | O sistema deverá identificar separadamente o excesso de categoria e o excesso de espaço. |
-
-## 6.3. Regras de cadastro de item
-
-| ID | Regra de negócio |
-|---|---|
-| RN18 | Todo item deve possuir um identificador único dentro do inventário. |
-| RN19 | Todo item deve possuir um nome válido. |
-| RN20 | Todo item deve possuir uma categoria válida. |
-| RN21 | A quantidade de um item deve ser um número inteiro maior que zero. |
-| RN22 | Itens não podem possuir quantidades fracionárias. |
-| RN23 | O espaço ocupado por uma unidade do item não pode ser negativo. |
-| RN24 | O cadastro de um item deve respeitar os limites de categoria e espaço do inventário. |
-| RN25 | O custo de categoria de um item deve ser calculado a partir de seu nível e quantidade. |
-| RN26 | O espaço ocupado por um item deve ser calculado a partir do espaço de uma unidade multiplicado pela quantidade. |
-
-## 6.4. Regras de categoria
-
-| ID | Regra de negócio |
-|---|---|
-| RN27 | Os níveis válidos de categoria são I, II, III, IV e V. |
-| RN28 | Cada nível de categoria deve possuir um valor numérico correspondente de 1 a 5. |
-| RN29 | Os pontos de categoria de um item devem ser calculados pela multiplicação do nível da categoria pela quantidade do item. |
-| RN30 | Os pontos de categoria de um inventário devem corresponder à soma dos pontos de todos os seus itens. |
-| RN31 | O inventário não deve ultrapassar seu limite de pontos de categoria durante uma operação regular de inclusão ou alteração de item. |
-
-### Cálculo dos pontos de categoria
-
-O custo de categoria de um item será calculado pela seguinte fórmula:
-
-`PontosItem = NivelCategoria × Quantidade`
-
-Os pontos utilizados pelo inventário serão calculados pela soma dos pontos de todos os itens:
-
-`PontosUtilizados = Σ PontosItem`
-
-Os pontos disponíveis serão calculados pela diferença entre o limite de categoria e os pontos utilizados:
-
-`PontosDisponiveis = LimiteCategoria − PontosUtilizados`
-
-## 6.5. Regras de espaço
-
-| ID | Regra de negócio |
-|---|---|
-| RN32 | O espaço utilizado pelo inventário deve corresponder à soma do espaço ocupado por todos os seus itens. |
-| RN33 | O espaço ocupado por um item deve corresponder ao espaço de uma unidade multiplicado pela quantidade. |
-| RN34 | O inventário não deve ultrapassar seu limite de espaço durante uma operação regular de inclusão ou alteração de item. |
-| RN35 | O espaço disponível deve corresponder à diferença entre o limite de espaço e o espaço utilizado. |
-| RN36 | A alteração da quantidade de um item deve considerar o impacto sobre o espaço total do inventário. |
-
-### Cálculo do espaço
-
-O espaço ocupado por um item será calculado pela seguinte fórmula:
-
-`EspacoItem = EspacoUnitario × Quantidade`
-
-O espaço utilizado será calculado pela soma do espaço ocupado pelos itens:
-
-`EspacoUtilizado = Σ EspacoItem`
-
-O espaço disponível será calculado pela diferença entre o limite de espaço e o espaço utilizado:
-
-`EspacoDisponivel = LimiteEspaco − EspacoUtilizado`
-
-## 6.6. Regras de alteração de item
-
-| ID | Regra de negócio |
-|---|---|
-| RN37 | A alteração de um item deve respeitar os limites de categoria e espaço do inventário. |
-| RN38 | A alteração de um item deve considerar seu custo anterior e seu novo custo. |
-| RN39 | A alteração de um item não deve contabilizar seu custo anterior como um novo consumo de recursos. |
-| RN40 | A alteração de um item deve ser rejeitada quando resultar em violação de qualquer limite. |
-| RN41 | Uma alteração rejeitada não deve modificar o estado anterior do inventário. |
-| RN42 | A alteração de um item deverá atualizar os valores calculados do inventário. |
-
-### Exemplo de alteração
-
-Considere um inventário com:
-
-- Limite de categoria: 16 pontos.
-- Pontos utilizados: 12.
-- Pontos disponíveis: 4.
-
-Um item existente possui categoria II e quantidade 2:
-
-`PontosAtuais = 2 × 2 = 4`
-
-Se a quantidade for alterada para 4:
-
-`NovosPontos = 2 × 4 = 8`
-
-O custo adicional será:
-
-`CustoAdicional = NovosPontos − PontosAtuais`
-
-`CustoAdicional = 8 − 4 = 4`
-
-Como o inventário possui 4 pontos disponíveis, a operação pode ser realizada, desde que também respeite o limite de espaço.
-
-## 6.7. Regras de alteração de limites
-
-| ID | Regra de negócio |
-|---|---|
-| RN43 | A alteração de um limite deverá ser permitida quando o novo valor for válido. |
-| RN44 | A alteração de um limite não deverá ser bloqueada apenas porque o inventário ficará fora de limite. |
-| RN45 | O sistema deverá manter os itens existentes após a alteração do limite. |
-| RN46 | O sistema deverá apresentar um aviso quando o inventário ultrapassar o limite de categoria. |
-| RN47 | O sistema deverá apresentar um aviso quando o inventário ultrapassar o limite de espaço. |
-| RN48 | O inventário deverá ser considerado fora de limite quando os pontos utilizados forem superiores ao limite de categoria ou quando o espaço utilizado for superior ao limite de espaço. |
-| RN49 | O inventário deverá ser considerado dentro dos limites quando os pontos utilizados e o espaço utilizado forem menores ou iguais aos respectivos limites. |
-| RN50 | A situação do inventário deverá ser recalculada após alterações nos itens ou nos limites. |
-
-A situação fora de limite não deverá impedir a consulta ou a remoção de itens.
-
-A inclusão ou alteração de itens deverá respeitar os limites vigentes, mesmo quando o inventário já estiver fora de limite.
-
-## 6.8. Regras de remoção de item
-
-| ID | Regra de negócio |
-|---|---|
-| RN51 | A remoção de um item deve retirar o item do inventário. |
-| RN52 | A remoção de um item deve liberar os pontos de categoria anteriormente utilizados por ele. |
-| RN53 | A remoção de um item deve liberar o espaço anteriormente ocupado por ele. |
-| RN54 | A remoção de um item deve atualizar os valores calculados do inventário. |
-| RN55 | A remoção de um item inexistente deve ser rejeitada ou tratada como uma operação sem alteração, conforme o contrato do caso de uso. |
-
-## 6.9. Regras de consistência do inventário
-
-| ID | Regra de negócio |
-|---|---|
-| RN56 | O inventário deve permanecer consistente após cada operação concluída com sucesso. |
-| RN57 | Os pontos utilizados devem ser derivados dos itens cadastrados. |
-| RN58 | O espaço utilizado deve ser derivado dos itens cadastrados. |
-| RN59 | Os pontos disponíveis não podem ser negativos quando o inventário estiver dentro dos limites. |
-| RN60 | O espaço disponível não pode ser negativo quando o inventário estiver dentro dos limites. |
-| RN61 | Uma operação regular que viole os limites do inventário deve ser rejeitada. |
-| RN62 | Uma alteração de limite que resulte em excesso deve ser permitida, desde que o novo limite seja válido. |
-
-## 6.10. Regras do Arsenal
-
-| ID | Regra de negócio |
-|---|---|
-| RN63 | O Arsenal deverá conter os itens padrão previamente cadastrados no sistema. |
-| RN64 | Os itens padrão do Arsenal não deverão ser alterados diretamente por operações realizadas nos inventários. |
-| RN65 | A seleção de um item do Arsenal deverá criar um registro correspondente no inventário. |
-| RN66 | A alteração de um item selecionado não deverá modificar o item padrão do Arsenal. |
-| RN67 | A inclusão de um item do Arsenal deverá respeitar os limites do inventário. |
-| RN68 | Os itens padrão do Arsenal deverão ser persistidos separadamente dos itens selecionados nos inventários. |
-
-## 6.11. Regras de itens personalizados
-
-| ID | Regra de negócio |
-|---|---|
-| RN69 | Um item personalizado deverá possuir os dados obrigatórios de um item. |
-| RN70 | Um item personalizado deverá respeitar os níveis válidos de categoria. |
-| RN71 | Um item personalizado deverá respeitar as regras de quantidade e espaço. |
-| RN72 | Um item personalizado deverá respeitar os limites do inventário no qual será cadastrado. |
-| RN73 | Um item personalizado deverá ser persistido independentemente dos itens padrão do Arsenal. |
-
-## 6.12. Regras de modificações de itens
-
-| ID | Regra de negócio |
-|---|---|
-| RN74 | Uma modificação deverá estar associada a um item. |
-| RN75 | Uma modificação não deverá ser contabilizada como um item independente do inventário. |
-| RN76 | Uma modificação poderá alterar características ou efeitos do item. |
-| RN77 | Uma modificação poderá alterar o custo de categoria do item. |
-| RN78 | O custo de categoria do item deverá considerar as modificações aplicadas. |
-| RN79 | A aplicação de uma modificação deverá respeitar os limites de categoria e espaço do inventário. |
-| RN80 | A remoção de uma modificação deverá recalcular os valores do item e do inventário. |
-
-As regras específicas de compatibilidade, bônus e cálculo de categoria das modificações deverão ser definidas conforme a mecânica do RPG.
-
-## 6.13. Regras de inventários compartilhados
-
-| ID | Regra de negócio |
-|---|---|
-| RN81 | Um inventário de veículo poderá ser acessado por mais de um usuário autorizado. |
-| RN82 | O inventário de veículo deverá possuir um identificador próprio. |
-| RN83 | O inventário de veículo deverá possuir limites próprios de categoria e espaço. |
-| RN84 | O acesso ao inventário de veículo deverá ser independente do acesso aos inventários individuais. |
-| RN85 | A alteração de um item no inventário de veículo deverá respeitar as regras desse inventário. |
-
----
-
-# 7. Casos de uso principais
-
-## UC01 — Consultar inventário individual
-
-**Ator:** Usuário.
-
-**Pré-condições:**
-
-- O inventário individual deve estar previamente estabelecido.
-- O usuário deve possuir acesso ao inventário.
-
-**Fluxo principal:**
-
-1. O usuário solicita a consulta do inventário.
-2. O sistema recupera os dados do inventário.
-3. O sistema apresenta os itens cadastrados.
-4. O sistema apresenta os limites de categoria e espaço.
-5. O sistema apresenta os pontos utilizados e disponíveis.
-6. O sistema apresenta o espaço utilizado e disponível.
-7. O sistema apresenta a situação do inventário.
-
-**Pós-condição:**
-
-- Nenhum dado do inventário deve ser alterado.
-
-## UC02 — Adicionar item personalizado
-
-**Ator:** Usuário.
-
-**Pré-condições:**
-
-- O inventário individual deve existir.
-- O usuário deve possuir acesso ao inventário.
-
-**Fluxo principal:**
-
-1. O usuário solicita a inclusão de um item.
-2. O usuário informa os dados do item.
-3. O sistema valida os dados informados.
-4. O sistema calcula os pontos de categoria do item.
-5. O sistema calcula o espaço ocupado pelo item.
-6. O sistema verifica os limites do inventário.
-7. O sistema adiciona o item.
-8. O sistema apresenta o inventário atualizado.
-
-**Fluxos alternativos:**
-
-- Se os dados do item forem inválidos, a operação é rejeitada.
-- Se o limite de categoria for ultrapassado, a operação é rejeitada.
-- Se o limite de espaço for ultrapassado, a operação é rejeitada.
-
-**Pós-condição:**
-
-- O item deve estar cadastrado.
-- Os valores calculados devem refletir o novo estado.
-
-## UC03 — Alterar item
-
-**Ator:** Usuário.
-
-**Pré-condições:**
-
-- O inventário deve existir.
-- O item deve estar cadastrado.
-
-**Fluxo principal:**
-
-1. O usuário seleciona um item.
-2. O usuário informa os novos dados.
-3. O sistema valida os dados.
-4. O sistema calcula o custo anterior e o novo custo.
-5. O sistema verifica os limites do inventário.
-6. O sistema altera o item.
-7. O sistema apresenta o inventário atualizado.
-
-**Fluxos alternativos:**
-
-- Se os dados forem inválidos, a operação é rejeitada.
-- Se a alteração ultrapassar o limite de categoria, a operação é rejeitada.
-- Se a alteração ultrapassar o limite de espaço, a operação é rejeitada.
-
-**Pós-condição:**
-
-- O item deve estar atualizado.
-- O inventário deve permanecer dentro dos limites vigentes.
-
-## UC04 — Remover item
-
-**Ator:** Usuário.
-
-**Pré-condições:**
-
-- O inventário deve existir.
-- O item deve estar cadastrado.
-
-**Fluxo principal:**
-
-1. O usuário seleciona o item.
-2. O usuário solicita sua remoção.
-3. O sistema remove o item.
-4. O sistema recalcula os valores do inventário.
-5. O sistema apresenta o inventário atualizado.
-
-**Pós-condição:**
-
-- O item não deve mais pertencer ao inventário.
-- Os pontos e o espaço anteriormente utilizados devem estar disponíveis.
-
-## UC05 — Alterar limite do inventário
-
-**Ator:** Usuário autorizado.
-
-**Pré-condições:**
-
-- O inventário deve existir.
-- O usuário deve possuir permissão para alterar os limites.
-
-**Fluxo principal:**
-
-1. O usuário solicita a alteração de um limite.
-2. O usuário informa o novo valor.
-3. O sistema valida o valor informado.
-4. O sistema atualiza o limite.
-5. O sistema recalcula os valores disponíveis.
-6. O sistema verifica se o inventário ultrapassa algum limite.
-7. O sistema apresenta o inventário atualizado.
-
-**Fluxo alternativo:**
-
-- Se o novo valor for inválido, a operação é rejeitada.
-- Se o novo limite resultar em excesso, o sistema mantém a alteração e apresenta um aviso.
-
-**Pós-condição:**
-
-- O limite deve estar atualizado.
-- Os itens existentes devem ser preservados.
-- A situação do inventário deve refletir os limites atuais.
-
-## UC06 — Consultar Arsenal
-
-**Ator:** Usuário.
-
-**Pré-condições:**
-
-- O Arsenal deve estar disponível.
-
-**Fluxo principal:**
-
-1. O usuário acessa o Arsenal.
-2. O sistema apresenta os itens padrão disponíveis.
-3. O usuário consulta ou busca um item.
-4. O sistema apresenta as características do item selecionado.
-
-**Pós-condição:**
-
-- Nenhum inventário deve ser alterado.
-
-## UC07 — Adicionar item do Arsenal ao inventário
-
-**Ator:** Usuário.
-
-**Pré-condições:**
-
-- O Arsenal deve estar disponível.
-- O inventário individual deve existir.
-- O item padrão deve estar cadastrado no Arsenal.
-
-**Fluxo principal:**
-
-1. O usuário seleciona um item do Arsenal.
-2. O usuário informa a quantidade desejada.
-3. O sistema valida a quantidade.
-4. O sistema calcula o custo de categoria e o espaço.
-5. O sistema verifica os limites do inventário.
-6. O sistema adiciona o item ao inventário.
-7. O sistema apresenta o inventário atualizado.
-
-**Fluxos alternativos:**
-
-- Se a quantidade for inválida, a operação é rejeitada.
-- Se o limite de categoria for ultrapassado, a operação é rejeitada.
-- Se o limite de espaço for ultrapassado, a operação é rejeitada.
-
-**Pós-condição:**
-
-- O item deve estar cadastrado no inventário.
-- O item padrão do Arsenal deve permanecer inalterado.
-
----
-
-# 8. Critérios de aceitação do módulo de inventário
-
-| ID | Critério de aceitação |
-|---|---|
-| CA01 | O usuário deve conseguir consultar o inventário previamente estabelecido. |
-| CA02 | O sistema não deve exigir que o usuário crie um inventário. |
-| CA03 | Deve ser possível adicionar um item que respeite os limites do inventário. |
-| CA04 | O sistema deve rejeitar o cadastro de um item com quantidade inválida. |
-| CA05 | O sistema deve rejeitar o cadastro de um item que ultrapasse o limite de categoria. |
-| CA06 | O sistema deve rejeitar o cadastro de um item que ultrapasse o limite de espaço. |
-| CA07 | Os pontos de categoria utilizados devem corresponder à soma dos pontos dos itens. |
-| CA08 | O espaço utilizado deve corresponder à soma do espaço dos itens. |
-| CA09 | Deve ser possível alterar um item sem contabilizar seu custo anterior como novo consumo. |
-| CA10 | O sistema deve rejeitar uma alteração que ultrapasse qualquer limite. |
-| CA11 | Deve ser possível remover um item e liberar seus pontos e espaço. |
-| CA12 | Uma operação rejeitada não deve modificar o estado anterior do inventário. |
-| CA13 | Deve ser possível consultar o inventário e seus valores calculados. |
-| CA14 | Os dados do inventário devem permanecer disponíveis após o encerramento e a reabertura da aplicação. |
-| CA15 | Deve ser possível alterar o limite de categoria mesmo quando o inventário ficar fora de limite. |
-| CA16 | Deve ser possível alterar o limite de espaço mesmo quando o inventário ficar fora de limite. |
-| CA17 | O sistema deve apresentar um aviso quando o inventário ultrapassar o limite de categoria. |
-| CA18 | O sistema deve apresentar um aviso quando o inventário ultrapassar o limite de espaço. |
-| CA19 | A alteração de um limite não deve remover automaticamente os itens existentes. |
-| CA20 | A situação do inventário deve ser recalculada após alterações nos itens ou limites. |
-
----
-
-# 9. Decisões pendentes
-
-As decisões abaixo precisam ser definidas antes ou durante a implementação dos requisitos correspondentes.
-
-| ID | Decisão pendente | Impacto |
-|---|---|---|
-| DP01 | Qual será o limite de categoria inicial de cada personagem? | Provisionamento dos inventários. |
-| DP02 | Como os limites de categoria serão definidos quando os personagens forem implementados? | Integração entre inventário e personagem. |
-| DP03 | Qual será a fórmula de cálculo do limite de categoria por atributos? | Evolução do domínio. |
-| DP04 | O limite inicial de espaço será sempre 20 para todos os inventários individuais? | Configuração do inventário. |
-| DP05 | Como será calculado o limite de espaço a partir dos atributos do personagem? | Evolução do domínio. |
-| DP06 | O espaço de um item poderá ser fracionário? | Tipo e validação do espaço. |
-| DP07 | Um inventário poderá possuir vários registros do mesmo item? | Organização dos itens e persistência. |
-| DP08 | A alteração de um limite poderá ser realizada por todos os usuários ou apenas por usuários autorizados? | Permissões. |
-| DP09 | Quais características poderão ser alteradas em um item personalizado? | Modelo de domínio. |
-| DP10 | Como serão definidos os bônus e requisitos das modificações? | Regras de modificações. |
-| DP11 | Quais modificações serão compatíveis com cada categoria de item? | Validação das modificações. |
-| DP12 | Como será calculado o custo de categoria após aplicação de modificações? | Regras de categoria. |
-| DP13 | Quais serão os limites de categoria e espaço dos inventários de veículos? | Inventários compartilhados. |
-| DP14 | Como serão definidas as permissões de acesso aos inventários de veículos? | Segurança e compartilhamento. |
-| DP15 | Qual será a estratégia de identificação dos inventários e itens? | Persistência e operações individuais. |
-| DP16 | Qual será o mecanismo de controle de concorrência na persistência? | Integridade em operações simultâneas. |
-
-As decisões pendentes não devem ser tratadas como regras confirmadas até que sejam definidas.
-
----
-
-# 10. Referências
-
-- [ISO/IEC/IEEE 29148:2018 — Systems and software engineering: Requirements engineering](https://www.iso.org/standard/72089.html)
-- [IEEE 29148-2018 — Requirements Engineering](https://standards.ieee.org/ieee/29148/6937/)
+## 9. Referências
+
+- ISO/IEC/IEEE 29148:2018 — *Systems and software engineering — Life cycle processes — Requirements engineering*
+- ISO/IEC 25010:2023 — *Systems and software engineering — Systems and software Quality Requirements and Evaluation (SQuaRE) — Product quality model*
+- Business Rules Group — *Business Rules Manifesto*
+- Object Management Group — *Semantics of Business Vocabulary and Business Rules* (SBVR)
