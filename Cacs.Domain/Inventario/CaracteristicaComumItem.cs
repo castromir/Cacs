@@ -7,6 +7,7 @@ namespace Cacs.Domain.Inventario
         public string Nome { get; }
         public string? Descricao { get; }
         public int Espaco { get; }
+        public int Pontos => CategoriaBase.Custo;
         public Categoria CategoriaBase { get; }
         public DetalheItem Detalhe { get; }
 

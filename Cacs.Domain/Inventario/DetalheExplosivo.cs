@@ -16,6 +16,11 @@ namespace Cacs.Domain.Inventario
             if (!Enum.IsDefined(alcance))
                 throw new ArgumentOutOfRangeException(nameof(alcance));
 
+            if (dano == default)
+                throw new ArgumentException(
+                    "O dano da arma não pode ser o valor padrão.",
+                    nameof(dano));
+
             Alcance = alcance;
             Dano = dano;
         }

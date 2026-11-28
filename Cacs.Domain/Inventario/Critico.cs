@@ -8,14 +8,14 @@ namespace Cacs.Domain.Inventario
 
         public Critico(int margem, int multiplicador)
         {
-            if (margem is < 0 or > 20)
+            if (margem is < 1 or > 20)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(margem),
                     "A margem de acerto crítico deve ser maior que 0 e menor que 21.");
             }
 
-            if (multiplicador is < 2)
+            if (multiplicador < 2)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(multiplicador),

@@ -46,6 +46,16 @@ namespace Cacs.Domain.Inventario.Arma
             if (tracos.Any(t => string.IsNullOrWhiteSpace(t.Descricao) || !Enum.IsDefined(t.Tipo)))
                 throw new ArgumentException("A arma não pode conter um traço inválido.", nameof(tracos));
 
+            if (critico == default)
+                throw new ArgumentException(
+                    "O crítico da arma não pode ser o valor padrão.",
+                    nameof(critico));
+
+            if (dano == default)
+                throw new ArgumentException(
+                    "O dano da arma não pode ser o valor padrão.",
+                    nameof(dano));
+
             Alcance = alcance;
             Dominio = dominio;
             Empunhadura = empunhadura;
