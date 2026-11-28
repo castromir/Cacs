@@ -55,6 +55,32 @@ namespace Cacs.Domain.Inventario
             _itens.Add(item);
         }
 
+        public void AlterarItem(Guid itemInventarioId, CaracteristicaComumItem novaCaracteristica)
+        {
+            if (novaCaracteristica is null)
+                throw new ArgumentNullException(nameof(novaCaracteristica));
+
+            var item = _itens.FirstOrDefault(i => i.Id == itemInventarioId);
+
+            if (item is null)
+            {
+                throw new InvalidOperationException(
+                    "O item não pertence a este inventário.");
+            }
+
+            var pontos =
+                PontosUtilizados
+                - item.Pontos
+                + novaCaracteristica.Pontos;
+
+            var espacos =
+                EspacosOcupados
+                - item.EspacoOcupado
+                + novaCaracteristica.Espaco;
+
+            item.Substituir(novaCaracteristica);
+        }
+
         public void RemoverItem(Guid itemInventarioId)
         {
             var item = _itens.FirstOrDefault(i => i.Id == itemInventarioId);
@@ -66,6 +92,6 @@ namespace Cacs.Domain.Inventario
             }
 
             _itens.Remove(item);
-        }       
+        }
     }
 }
